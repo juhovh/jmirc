@@ -1,0 +1,528 @@
+Version 0.95
+------------
+
+2006-01-01  Juho Vähä-Herttua
+   * Fix bug when same nick whois requested multiple times
+   * Fix potential crash in /part command and /kick command
+   * Close window after /part message (earlier left open)
+   * Fix index out of bounds in UIHandler
+   * Fix crash in UIHandler if parted or kicked in Status win
+   * Add new UTF-8 options to advanced settings
+
+2005-12-31  Juho Vähä-Herttua
+   * Add support for native UTF-8 encoding/decoding
+   * Add support for UTF-8 decode with fallback
+
+2005-12-04  Juho Vähä-Herttua
+   * Fix incoming CTCP messages broken in 0.94
+   * Add support for inputting multiple lines at one time
+   * More verbose whois from names list requested
+   * Small fix for part command if not in a channel window
+   * Add support for /kick command with a kick message also
+
+Version 0.94
+------------
+
+2005-10-19  Juho Vähä-Herttua
+   * Change channel separator to be ",", makes chankey possible
+   * Add support for multiple highlight strings
+
+2005-06-21  Juho Vähä-Herttua
+   * Longer join input because requested (and it was too small)
+
+2005-03-31  Juho Vähä-Herttua
+   * keyRepeated events now forwarded correctly in Window.java
+
+2005-03-29  Juho Vähä-Herttua
+   * TextArea.addText() really needs to be synchronized,
+     although I already got rid of synched methods
+
+2005-03-21  Juho Vähä-Herttua
+   * Added support for /ctcp command and /whois equals now /wii
+   * Button 0 is a shortcut to favourites
+   * RPL_TOPICWHOTIME works and came with a pretty date parser
+
+2005-03-08  Juho Vähä-Herttua
+   * Changed the pong reply to be more similar with ping request
+   * Fixed the modeline parser that breaks with some servers
+
+Version 0.93
+------------
+
+2005-03-03  Juho Vähä-Herttua
+   * readLine crashed with 0xFF interpreting it as EOF, thanks
+     to Ilya Novoselov for a hint
+
+2005-03-03  Juho Vähä-Herttua
+   * Russian native encodings should now be 100% working
+
+2005-02-26  Juho Vähä-Herttua
+   * Minor cleanups in Window.java
+
+Version 0.92
+------------
+
+2005-02-23  Juho Vähä-Herttua
+   * Fixed NumberFormatException in settings menu
+   * Fixed a cosmetic bug in dynamic status header
+   * Added optional setting for disabling all colours (faster)
+   * Added unhandled server input printing as optional setting
+
+2005-02-22  Juho Vähä-Herttua
+   * Fixed a fatal bug with multiple profiles
+
+2005-02-21  Juho Vähä-Herttua
+   * Removed all thread synchs to eliminate hangups on some phones
+
+Version 0.91
+------------
+
+2005-02-20  Juho Vähä-Herttua
+   * When disconnected, the windows are not closed any more
+   * If user disconnect return automatically to main screen again
+   * Cleaned up the advanced settings window
+   * Added support for changing the username
+
+2005-02-19  Juho Vähä-Herttua
+   * Capital letters on BlackBerry quick input to work
+   * Changed the destroying quit message
+   * Dynamic status header for smaller screens (suggested by dbt)
+   * New profile code, should fix problems editing profiles
+   * Fixed the USER not enough parameters bug
+   * Added preliminary support for RPL_TOPICWHOTIME
+
+2005-02-07  Juho Vähä-Herttua
+   * Server fields type is now URL as suggested by Niko Kortelainen
+
+2005-01-27  Juho Vähä-Herttua
+   * Several changes to networking code related to disconnect hangups
+
+2005-01-16  Juho Vähä-Herttua
+   * Fixed a small bug related to fire button at least on Siemens C55
+
+Version 0.90
+------------
+
+2005-01-15  Juho Vähä-Herttua
+   * Rewrote parts of the profile code to work little better
+   * Added possibility to edit profiles, still needs fixing
+   * Made it to print unknown server lines to status window
+
+2005-01-10  Juho Vähä-Herttua
+   * Fixed profiles to now also support deleting of profiles
+   * Fire button press now also shortcut to msg if not used otherwise
+
+2005-01-08  Juho Vähä-Herttua
+   * Query from namelist now fixed to work again
+   * Status header now darker for better contrast on some screens
+   * Left coordinate in TextArea had no affection, fixed for future
+   * Rewrote Database.java, hopefully doesn't cause any problems
+   * Added preliminary support for profiles
+
+2005-01-02  Juho Vähä-Herttua
+   * Output stream now always flushed in socket connection
+
+2004-12-30  Juho Vähä-Herttua
+   * Added ISO-8859-2 to supported encodings list
+
+2004-12-07  Juho Vähä-Herttua
+   * Changed CTCP version reply to more verbose if possible
+
+Version 0.89
+------------
+
+2004-12-07  Juho Vähä-Herttua
+   * Small fix in /command-handler, should make better
+   * Cleaned up some useless screen updates to make it faster
+
+2004-12-04  Juho Vähä-Herttua
+   * Fixed a case bug in whois query
+   * Fixed a query opening bug that caused hanging
+
+2004-12-01  Juho Vähä-Herttua
+   * Fixed a bug in kick, didn't return to mainscreen
+
+2004-11-30  Juho Vähä-Herttua
+   * Added BlackBerry direct input for testing
+   * Catch all exceptions in SocketIrc because of Nokia VM throwing 
+     those NullPointerExceptions, many thanks to maQmIgh for testing
+
+2004-11-27  Juho Vähä-Herttua
+   * Fixed an underlining bug in colour parser
+   * Changed highlighted string to be italic
+   * Fixed a problem with sending messages in status window
+   * Unknown /commands now reported in status window
+
+Version 0.88
+------------
+
+2004-11-27  Juho Vähä-Herttua
+   * Added bold, underline, inverse and mIRC colour parser
+   * Optimized TextArea.java to use chars as colours and input
+     the colour information in the first character of string
+   * Made colour parser optional in Advanced options
+   * Added support for halfops on some networks
+   * Fixed a winlock bug in favourites
+
+2004-11-26  Juho Vähä-Herttua
+   * Added possibility to add favourites a la Virca
+
+2004-11-25  Juho Vähä-Herttua
+   * Fixed wrong nick in modeparser
+   * Fixed NullPointerException when parting with empty message
+   * Fixed removal of nick when someone gets kicked out from channel
+   * Fixed linechanging bug introduced in 0.87
+   * Finished support for background colours in text
+
+Version 0.87
+------------
+
+2004-11-24  Juho Vähä-Herttua
+   * Fixed the linechange bug in TextArea.java
+   * Fixed linechange when colour changes inside a word
+   * Fixed hangup bug in connecting if server doesn't respond
+   * No error shown if HTTP code 404 returned after connected already
+
+2004-11-21  Juho Vähä-Herttua
+   * One more bug in printNicks() of Window.java fixed
+   * Modes now shown again in joining channel list, few cleanups in casts
+   * Nameslist back is handled with menu command, others should be too
+   * All nick changes now handled with /nick command
+   * Can now change topic with /topic command
+   * DestroyApp now works again and informs about it on quit
+
+2004-11-20  Juho Vähä-Herttua
+   * Added /part and /quit commands
+   * Fixed a parser bug causing problems with next version of HTTP proxy
+
+Version 0.86
+------------
+
+2004-11-19  Juho Vähä-Herttua
+   * Fixed a bug in the namelist
+   * Fixed hangup in disconnecting when in socket mode without polling
+   * All exceptions are now catched in connecting to avoid hanging
+   * Cleaned up the disconnecting little more
+
+Version 0.85
+------------
+
+2004-11-18  Juho Vähä-Herttua
+   * Changed the HttpIrc.java byteout to be closer to truth (include url)
+
+2004-11-17  Juho Vähä-Herttua
+   * Actions are now handled all with the '/me' command, removed from menu
+   * '/msg' command works better and actually shows what you have sent
+   * Raw commands are now handled all with the '/raw' command, msg removed
+     from status window menu and * button doesn't work in status window
+   * Finally wrote a mode parser for channel usermodes (op and voice)
+   * Fixed small array overflow bug in russian codepages
+
+2004-11-16  Juho Vähä-Herttua
+   * Rewrote names handling in Window.java and made names vector private
+   * Changed channel separator to ' ' instead of ','
+
+2004-11-15  Juho Vähä-Herttua
+   * Finished cyrillic character support because everyone has it now
+   * Removed startup script since I don't use it and it's bloat
+   * Added encoding select to advanced configuration window
+   * Added socket polling select to advanced configuration window
+   * In whois reply idle time is now shown in days, hours etc.
+   * Changed namelist to always include information about the mode
+
+2004-11-14  Juho Vähä-Herttua
+   * Fixes in SocketIrc.java because of NullPointerException
+   * Changed IrcConnection.java from interface to abstract class and
+     added some protected methods, preparing for better encoding support
+
+2004-11-12  Juho Vähä-Herttua
+   * Removed public readinglist and topic variables from Window.java
+   * Added many new numeric reply handlings in Listener.java
+
+2004-11-11  Juho Vähä-Herttua
+   * Rewrote clearChanPriv() again to make it more logical
+   * Removed Listener.isListening() because it's useless now
+
+2004-11-09  Juho Vähä-Herttua
+   * Cleaned useless updateConnection() call from SocketIrc.java
+
+Version 0.83
+------------
+
+2004-11-04  Juho Vähä-Herttua
+   * Fixed query open to work again as it should
+   * Fixed bug in closing the window
+   * Remove and add the menu when putting keylock on or off
+   * Fixed a bug in /msg that only sent the first word of the message
+   * Fixed the colour problem if colour's first word is too long to fit
+   * Notices are now handled as actions in status, maybe could do better
+
+Version 0.82
+------------
+
+2004-11-01  Juho Vähä-Herttua
+   * New disconnecting routine caused problems on some phones, now after
+     disconnecting the user has to confirm with "Close" command, may change
+     this later but it's the best solution right now.
+   * Channel windows should be now closed also if connecting failed
+   * Now there are two types of alarm, louder when opening new private
+   * Shorter and not so scary error when IOException happens on HTTP 
+     connection, because we get them all the time from gateways it seems
+   * Added some more human readable HTTP response code explanations
+   * If timestamp minute smaller than 10, add additional 0 in front of it
+
+2004-10-28  Juho Vähä-Herttua
+   * Fixed jmIrc to disconnect and cleanup properly even when destroyed 
+     by the phone. This caused a bigger problem on BlackBerry, thanks to 
+     Steve Host for pointing this out.
+   * Finished the keylock, should work pretty well now, 5 and # lock
+   * Fixed the error messages, newlines unsurprisingly don't work very well
+
+2004-10-26  Juho Vähä-Herttua
+   * Fixed a bug that caused problems after parting from a channel
+   * Fixed a bug that opened new window in the middle of textbox writing
+
+2004-10-25  Juho Vähä-Herttua
+   * Timestamp hour now using HOUR_OF_DAY as it should
+   * Added some kind of keylock support, needs finishing
+   * Added alarm for highlights when in keylock mode
+   * Several changes related to disconnect, this should finally fix
+     the NullPointerExceptions on disconnect as Listener thread is now
+     joined to the main thread and there should be no threading problems
+   * Added additional '<' to the nick to make it look more pretty
+
+Version 0.81
+------------
+
+2004-10-18  Juho Vähä-Herttua
+   * Fixed the timestamp to be always in 24h format (am/pm too long)
+   * Hopefully fixed the problems many phones had with saving settings
+
+2004-10-08  Juho Vähä-Herttua
+   * HTTP proxy and IRC connection errors were accidentally swapped
+
+Version 0.80
+------------
+
+2004-10-05  Juho Vähä-Herttua
+   * Changed the USER command according to RFC 2812, sets +i to user
+   * Added support for highlighting messages, have to finish behaviour
+   * Added per channel timestamping option to the menus
+
+2004-10-02  Juho Vähä-Herttua
+   * Removed the windowlist from menus as useless
+
+2004-10-01  Juho Vähä-Herttua
+   * Fixed whois to work in query menus
+   * Star button processed now in keyRelease event to avoid problems
+   * Unknown CTCP commands are now reported in console window
+   * Maximum backbuffer lines count is now configurable
+   * Fixed indicators to work again, no problems so far
+   * Removed that "PING? PONG!" because it's not very useful
+   * Made the configuration to reset on every update because preserving
+     it seems to cause some problems
+   * Added kick, op and voice options to namelist commands
+
+2004-09-23  Juho Vähä-Herttua
+   * TextArea.java got a rewrite, buffer structure now in arrays
+     instead of vectors, got rid of the need for Message.java
+   * Binded star button to be a quick button for message writing
+   * Changed the colours to ANSI colour codes to be more standard
+   * Many fixes in both TextArea.java and Window.java
+   * Added indicators back but they still don't work right
+
+2004-09-21  Juho Vähä-Herttua
+   * Fixed the IrcConnection interface to be more sensible
+   * Fixed a bug where errors were displayed too many times
+
+Version 0.77
+------------
+
+2004-09-17  Juho Vähä-Herttua
+   * Added new class UIHandler.java, needs a lot of cleanups and also 
+     makes the program bigger, trying to remove Message.java to 
+     compensate the growth later
+   * Added dirty hack for coloured nicks because requested, we will
+     rewrite the UI classes anyway so it doesn't matter at this stage
+
+2004-09-16  Juho Vähä-Herttua
+   * Fixed a bug in parser that caused problems with some irc servers, 
+     thanks to Matus Kral for helping to test this and also the SE T610 
+     bug that was open for very long time and finally got fixed in 0.76
+   * Fixed a nick change bug if connecting with existing nick, a bit ugly
+   * Small fixes in statusbar, the height wasn't always right
+
+Version 0.76
+------------
+
+2004-09-16  Juho Vähä-Herttua
+   * Updated the statusbar finally to be at least a bit smaller and more
+     logical maybe (windows from left to right)
+
+2004-09-15  Juho Vähä-Herttua
+   * More debug information in connection exceptions
+   * Now streams and connection should be closed correctly in HttpIrc.java,
+     hopefully will fix some problems with too many connections
+   * Error in HTTP proxy connection doesn't abort any more
+   * Disconnect no longer sent if there has been problem with irc 
+     connection in HTTP mode
+
+2004-09-14  Juho Vähä-Herttua
+   * Added support for CTCP commands ACTION, PING and VERSION
+
+Version 0.75
+------------
+
+2004-09-13  Juho Vähä-Herttua
+   * Added game action buttons for scrolling again because requested
+   * Polltime now totally manual if set to 0 in HTTP mode (can crash
+     some phones on update if not updated frequently enough, buffer
+     problem and can be fixed on proxy side).
+   * Nick change should now also update nick to window, added one more
+     ugly static variable in jmIrc.java, should really clean them...
+   * Startupscript is now executed immediately after connect in HTTP
+     mode, earlier it waited for next polling
+
+2004-08-28  Juho Vähä-Herttua
+   * Fixed realname to work now, was added last time but didn't work
+
+Version 0.74
+------------
+
+2004-08-27  Juho Vähä-Herttua
+   * Changed quit message to use also GET instead of HEAD, maybe will fix
+     the mysterious crash when disconnecting on some phones
+   * Rewrote the jmIrc.java, it was a real pain to update before and caused
+     some crashes as well, should work much better
+   * Dropped the font config now, program size down over 2kB
+   * Updated Database.java and jmIrc.java to save only needed values on ok
+     command, should make configuring much faster on some phones
+
+Version 0.73
+------------
+
+2004-08-21  Juho Vähä-Herttua
+   * Poll time is now adjustable and you can update manually with key 5
+
+2004-08-18  Juho Vähä-Herttua
+   * Using GET request instead of HEAD in connecting to make Nokia 6610 work
+
+Version 0.72
+------------
+
+2004-08-13  Juho Vähä-Herttua
+   * Wrote configuration dialogues for most HTTP settings
+   * Added some configuration options not in settings yet
+   * Small fixes here and there
+   * Siemens C55 didn't show ChoiceGroup right without label
+
+2004-08-12  Juho Vähä-Herttua
+   * Finished HttpIrc.java and it should now work pretty well
+   * Added polled mode also for SocketIrc.java if needed with some phones
+
+2004-08-11  Juho Vähä-Herttua
+   * Lots of cleanups regarding useless variables (hopefully no new bugs)
+   * Cleanup at disconnect is done more properly
+   * Renamed Irc.java to IrcConnection.java
+   * Restructured IrcConnection interface
+   * Wrote a HttpIrc.java class but it needs some testing before use
+   * Updated IrcConnection classes to use several encodings, if they are
+     not supported it will fall back to phone's default encoding
+
+Version 0.70
+------------
+
+2004-08-11  Juho Vähä-Herttua
+   * +l/+i/+b/+k info if joining to channel fails should now show in console
+   * Kicks are now handled almost correctly (need to update namelist)
+   * At least some kind of info should be reported if connection fails
+   * Advanced option "show header" now works as it should
+
+2004-08-02  Juho Vähä-Herttua
+   * Select menu from namelist was broken, fixed now
+   * Doesn't now scroll to the end always when added new text (bug since 0.69)
+   * Header adding and removal can now handle position right
+   * Adding to namelist was very broken, should work now
+   * Header adding and removal is now updated to all windows correctly
+
+Version 0.69
+------------
+
+2004-07-31  Juho Vähä-Herttua
+   * Changed keys to use the standard ITU-T keypad (the numbers) because of
+     recommendation in MIDP documents and portability
+   * Added new home, end, pageup and pagedown buttons (1,7,3,9)
+   * Added header toggle button to #-key, feature is still very buggy, don't
+     expect too much from it
+
+2004-07-30  Juho Vähä-Herttua
+   * Lots of cleanups in GUI classes, I hope they'll soon be pretty enough
+   * Header should now be easy to show and hide with setHeaderVisible()
+
+Version 0.68
+------------
+
+2004-07-26  Juho Vähä-Herttua
+   * Fixed STUPID bug which prevented sending messages, somehow window name and
+     nick were switched in Window.java, still can't understand why I did this
+
+Version 0.67
+------------
+
+2004-07-21  Juho Vähä-Herttua
+   * Updated ChangeLog to be UTF-8 from now on, updating source files as well
+   * Restructured some of the TextArea and DisplayCanvas code
+   * Fixed the buggy scrollbar and problems with linechanges
+
+2004-05-20  Juho Vähä-Herttua
+   * Small fixes and cleanups here and there
+
+Version 0.66
+------------
+
+2004-05-20  Juho Vähä-Herttua
+   * Fixed small bug when someone changes the topic
+   * Finished merging of Channel.java and Window.java
+   * Removed IrcCommands.java as useless
+
+Version 0.65
+------------
+
+2004-05-15  Juho Vähä-Herttua
+   * Removed debugging window and status window is now always on
+   * Separated TextArea.java, DisplayCanvas.java needs cleaning
+   * Renamed ScreenOutput.java to Window.java
+   * Cleaned TextArea.addText() function, it was quite crap (sorry)
+   * Removed support for those mirc-colours for now, the detection wasn't very good
+   * Merged Private.java and Console.java to Window.java
+
+Version 0.62
+------------
+
+2004-05-14  Juho Vähä-Herttua
+   * Fixed bug, save didn't work in advanced options
+   * Added new option for status line in advanced options
+   * Cleaned Database.java
+   * Removed Parser.java as useless
+
+Version 0.60
+------------
+
+2004-05-14  Juho Vähä-Herttua
+   * Small cleanup of the code
+   * Removed PollHttpIrc totally, may be added back later
+
+2004-05-13  Juho Vähä-Herttua
+   * Started removal of HTTP gateway support for now
+   * Started rewriting of SocketIrc.java
+
+2004-05-12  Juho Vähä-Herttua
+   * Rewriting of Listener.java started
+   * Missing close()-method in Private.java fixed
+
+2004-05-11  Juho Vähä-Herttua
+   * Major cleanup of the old code
+   * Fixed typo "Advancad"->"Advanced" in WLIrc.java
+   * Fixed typo/bug "Back"->"[Back]" in Channel.java
+   * Fixed typos "recieved"->"received" in many files
+   * Missing toUpperCase() in Channels.close() method

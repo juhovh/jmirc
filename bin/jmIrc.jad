@@ -1,0 +1,8 @@
+MIDlet-1: jmIrc, /icons/jmIrc.png, jmirc.jmIrc
+MIDlet-Jar-Size: 35198
+MIDlet-Jar-URL: http://jmirc.sourceforge.net/jmIrc.jar
+MIDlet-Name: jmIrc
+MIDlet-Vendor: juhovh
+MIDlet-Version: 0.95
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0
