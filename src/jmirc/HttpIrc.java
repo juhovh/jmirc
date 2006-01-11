@@ -25,7 +25,6 @@ import java.util.Vector;
 public class HttpIrc extends IrcConnection {
 	private Vector inqueue;
 	private String encoding, identifier, gwhost, gwpasswd, outbuf;
-	private boolean utf8detect, utf8output;
 	private int gwport;
 	private boolean connected, closeconn;
 
@@ -39,8 +38,6 @@ public class HttpIrc extends IrcConnection {
 		encoding = charset;
 		inqueue = new Vector();
 		outbuf = null;
-		utf8detect = false;
-		utf8output = false;
 
 		bytein = 0;
 		byteout = 0;
@@ -55,7 +52,7 @@ public class HttpIrc extends IrcConnection {
 
 		url = "http://" + gwhost + ":" + gwport + "/connect?host=" + Utils.URLEncode(host.getBytes()) +
 		      "&port=" + Utils.URLEncode((""+port).getBytes()) + "&passwd=" + Utils.URLEncode(gwpasswd.getBytes()) +
-		      "&data=" + Utils.URLEncode(stringToByteArray(init, encoding, utf8output));
+		      "&data=" + Utils.URLEncode(stringToByteArray(init, encoding));
 
 		try {
 			c = (HttpConnection) Connector.open(url);
@@ -118,7 +115,7 @@ public class HttpIrc extends IrcConnection {
 
 		url = "http://" + gwhost + ":" + gwport + "/" + identifier;
 		if (outbuf != null) {
-			url += "?data=" + Utils.URLEncode(stringToByteArray(outbuf, encoding, utf8output));
+			url += "?data=" + Utils.URLEncode(stringToByteArray(outbuf, encoding));
 			byteout += url.getBytes().length;
 			outbuf = null;
 		}
@@ -167,7 +164,7 @@ public class HttpIrc extends IrcConnection {
 					while (bais.available() > 0) {
 						buf = Utils.readLine(bais);
 						if (buf != null) {
-							temp = byteArrayToString(buf, encoding, utf8detect);
+							temp = byteArrayToString(buf, encoding);
 							inqueue.addElement(temp);
 						}
 					}
@@ -197,11 +194,6 @@ public class HttpIrc extends IrcConnection {
 	public boolean hasDataInBuffer() {
 		if (inqueue.size() == 0) return false;
 		else return true;
-	}
-
-	public void setUnicodeMode(boolean utf8detect, boolean utf8output) {
-		this.utf8detect = utf8detect;
-		this.utf8output = utf8output;
 	}
 
 	public boolean isConnected() {

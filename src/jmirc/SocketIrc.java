@@ -25,7 +25,6 @@ public class SocketIrc extends IrcConnection {
 	private DataInputStream in;
 	private DataOutputStream out;
 	private String encoding, outbuf;
-	private boolean utf8detect, utf8output;
 	private boolean pollmode, connected;
 
 	private int bytein;
@@ -33,8 +32,6 @@ public class SocketIrc extends IrcConnection {
 
 	public SocketIrc(boolean pollmode, String charset) {
 		encoding = charset;
-		utf8detect = false;
-		utf8output = false;
 
 		bytein = 0;
 		byteout = 0;
@@ -84,7 +81,7 @@ public class SocketIrc extends IrcConnection {
 
 		if (outbuf != null && connected) {
 			try {
-				tmp = stringToByteArray(outbuf, encoding, utf8output);
+				tmp = stringToByteArray(outbuf, encoding);
 				out.write(tmp);
 				out.flush();
 				byteout += tmp.length;
@@ -110,7 +107,7 @@ public class SocketIrc extends IrcConnection {
 			buf = Utils.readLine(in);
 			if (buf==null) return null;
 			bytein += buf.length + 40;
-			ret = byteArrayToString(buf, encoding, utf8detect);
+			ret = byteArrayToString(buf, encoding);
 
 		} catch(Exception e) {
 			connected = false;
@@ -134,11 +131,6 @@ public class SocketIrc extends IrcConnection {
 			}
 		}
 		else return connected;
-	}
-
-	public void setUnicodeMode(boolean utf8detect, boolean utf8output) {
-		this.utf8detect = utf8detect;
-		this.utf8output = utf8output;
 	}
 
 	public boolean isConnected() {
