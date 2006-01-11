@@ -29,6 +29,7 @@ public abstract class IrcConnection {
 	// notes: #152 not used in cp1252 so we encode it to '�'
 	//        #160 is a non-breaking space, #173 is a soft hyphen
 	protected Hashtable hashmap = null;
+	private boolean utf8detect, utf8output;
 
 	public abstract String connect(String host, int port, String init);
 	public abstract void disconnect();
@@ -41,13 +42,22 @@ public abstract class IrcConnection {
 	public abstract boolean isConnected();
 	public abstract int getBytesIn();
 	public abstract int getBytesOut();
-	public abstract void setUnicodeMode(boolean utf8detect, boolean utf8output);
 
-	protected String byteArrayToString(byte[] bytes, String encoding, boolean utf8fallback) {
+	IrcConnection() {
+		this.utf8detect = false;
+		this.utf8output = false;
+	}
+
+	public void setUnicodeMode(boolean utf8detect, boolean utf8output) {
+		this.utf8detect = utf8detect;
+		this.utf8output = utf8output;
+	}
+
+	protected String byteArrayToString(byte[] bytes, String encoding) {
 		char[] map = null;
 		String ret;
 
-		if (utf8fallback) {
+		if (utf8detect) {
 			// we need to have some 1-byte fallback, let's use latin1
 			if (encoding.equals("UTF-8"))
 				encoding = "ISO-8859-1";
@@ -90,7 +100,7 @@ public abstract class IrcConnection {
 		return ret;
 	}
 
-	protected byte[] stringToByteArray(String string, String encoding, boolean utf8output) {
+	protected byte[] stringToByteArray(String string, String encoding) {
 		byte[] ret;
 
 		if (utf8output)
