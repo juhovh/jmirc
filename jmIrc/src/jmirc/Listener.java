@@ -130,7 +130,13 @@ public class Listener extends Thread {
 		char temp;
 		int cmdnum;
 
-		try{
+		try {
+			if (response.indexOf("ERROR ") == 0) {
+				uihandler.getConsole().writeInfo(response);
+				irc.disconnect();
+				return;
+			}
+
 			cmdline = parseLine(response);
 
 			if (cmdline[1] == null) return;
@@ -249,7 +255,15 @@ public class Listener extends Thread {
 					uihandler.getConsole().writeAction("-" + fromnick + "- " + cmdline[2]);
 				}
 				else if (command[0].equals("NICK")) {
-					String str = fromnick + " is now known as " + firstparam;
+					String str;
+
+					if (fromnick.equals(uihandler.nick)) {
+						str = "You're now known as " + firstparam;
+						uihandler.nick = firstparam;
+					}
+					else {
+						str = fromnick + " is now known as " + firstparam;
+					}
 					Hashtable ht = uihandler.getChannels();
 					Enumeration en = ht.elements();
 					while (en.hasMoreElements()) {
@@ -259,6 +273,7 @@ public class Listener extends Thread {
 							ch.changeNick(fromnick, firstparam);
 						}
 					}
+					System.out.println(uihandler.nick);
 				}
 				else if (command[0].equals("QUIT")) {
 					Hashtable ht = uihandler.getChannels();
@@ -270,6 +285,9 @@ public class Listener extends Thread {
 							ch.deleteNick(fromnick);
 						}
 					}
+				}
+				else if (command[0].equals("INVITE")) {
+					uihandler.getConsole().writeAction("* You have been invited to " + cmdline[2]);
 				}
 				else if (command[0].equals("JOIN")) {
 					ch = uihandler.getChannel(firstparam);
@@ -381,7 +399,8 @@ public class Listener extends Thread {
 						uihandler.getChannel(command[2]).writeInfo(topicwho);
 						break;
 					case 341:  // RPL_INVITING
-						uihandler.getChannel(command[2]).writeAction("Inviting " + command[3] + " to channel");
+						if (command.length == 3)
+							uihandler.getConsole().writeAction("* Inviting " + command[2] + " to " + cmdline[2]);
 						break;
 					case 342:  // RPL_SUMMONING
 					case 351:  // RPL_VERSION

@@ -40,6 +40,8 @@ public class Window extends Canvas implements CommandListener {
 	public static final char MODE_HALFOP = 2;
 	public static final char MODE_OP = 4;
 
+	private static boolean initialized = false;
+
 	private final String CHANGE_NICK = "Change nick";
 	private final String JOIN_CHANNEL = "Join channel";
 	private final String OPEN_QUERY = "Query";
@@ -51,17 +53,19 @@ public class Window extends Canvas implements CommandListener {
 
 	private TextBox textbox;
 	private Form favform;
-	private Command cmd_msg, cmd_join, cmd_query, cmd_favourites, cmd_traffic, cmd_timestamp, cmd_disconnect;
-	private Command cmd_closeconsole, cmd_closenamfav;
-	private Command cmd_addfav, cmd_delfav, cmd_sendfav;
 
-	private Command cmd_close;
+	/* commands common for all windows */
+	private static Command cmd_msg, cmd_join, cmd_query, cmd_favourites, cmd_traffic, cmd_timestamp, cmd_disconnect;
+	private static Command cmd_closeconsole, cmd_closenamfav;
+	private static Command cmd_addfav, cmd_delfav, cmd_sendfav;
 
-	private Command cmd_whois;
-	private Command cmd_names;
+	private static Command cmd_close;
+
+	private static Command cmd_whois;
+	private static Command cmd_names;
 	
-	private Command cmd_send, cmd_cancel;
-	private Command cmd_ok;
+	private static Command cmd_send, cmd_cancel;
+	private static Command cmd_ok;
 
 	private ChoiceGroup cg_favourites;
 
@@ -100,30 +104,34 @@ public class Window extends Canvas implements CommandListener {
 		names = new Vector();
 		setHeaderVisible(showheader);
 
-		cmd_ok = new Command("Ok", Command.OK, 10);
+		if (!initialized) {
+			cmd_ok = new Command("Ok", Command.OK, 10);
 
-		cmd_send = new Command("Send", Command.OK, 10);
-		cmd_cancel = new Command("Cancel", Command.CANCEL, 20);
+			cmd_send = new Command("Send", Command.OK, 10);
+			cmd_cancel = new Command("Cancel", Command.CANCEL, 20);
 
-		cmd_msg = new Command("Msg", Command.OK, 10);
-		cmd_join = new Command("Join", Command.SCREEN, 20);
-		cmd_query = new Command("Query", Command.SCREEN, 30);
-		cmd_favourites = new Command("Favourites", Command.SCREEN, 40);
-		cmd_traffic = new Command("Bytecounter", Command.SCREEN, 50);
-		cmd_timestamp = new Command("Timestamp on", Command.SCREEN, 60);
-		cmd_disconnect = new Command("Disconnect", Command.SCREEN, 70);
+			cmd_msg = new Command("Msg", Command.OK, 10);
+			cmd_join = new Command("Join", Command.SCREEN, 20);
+			cmd_query = new Command("Query", Command.SCREEN, 30);
+			cmd_favourites = new Command("Favourites", Command.SCREEN, 40);
+			cmd_traffic = new Command("Bytecounter", Command.SCREEN, 50);
+			cmd_timestamp = new Command("Timestamp on", Command.SCREEN, 60);
+			cmd_disconnect = new Command("Disconnect", Command.SCREEN, 70);
 
-		cmd_close = new Command("Close", Command.SCREEN, 65);
-		cmd_whois = new Command("Whois", Command.SCREEN, 35);
-		cmd_names = new Command("Names", Command.SCREEN, 35);
+			cmd_close = new Command("Close", Command.SCREEN, 65);
+			cmd_whois = new Command("Whois", Command.SCREEN, 35);
+			cmd_names = new Command("Names", Command.SCREEN, 35);
 
-		cmd_sendfav = new Command("Send", Command.OK, 10);
-		cmd_addfav = new Command("Add new", Command.SCREEN, 20);
-		cmd_delfav = new Command("Delete selected", Command.SCREEN, 30);
+			cmd_sendfav = new Command("Send", Command.OK, 10);
+			cmd_addfav = new Command("Add new", Command.SCREEN, 20);
+			cmd_delfav = new Command("Delete selected", Command.SCREEN, 30);
 
-		cmd_closeconsole = new Command("Close", Command.CANCEL, 10);
-		cmd_closenamfav = new Command("Close", Command.CANCEL, 90);
+			cmd_closeconsole = new Command("Close", Command.CANCEL, 10);
+			cmd_closenamfav = new Command("Close", Command.CANCEL, 90);
 
+			initialized = true;
+		}
+		
 		addMenu();
 		this.setCommandListener(this); 
 	}
