@@ -398,7 +398,9 @@ public class jmIrc extends MIDlet implements CommandListener {
 			if (ret != null) {
 				uihandler.getConsole().writeInfo(ret);
 			}
-			irc.disconnect();
+			// disconnect is handled in listener after a moment
+			// irc.disconnect();
+
 			listener.setNeedUpdate(true);
 		}
 	}
