@@ -42,10 +42,7 @@ public class Window extends Canvas implements CommandListener {
 
 	private static boolean initialized = false;
 
-	private final String CHANGE_NICK = "Change nick";
-	private final String JOIN_CHANNEL = "Join channel";
-	private final String OPEN_QUERY = "Query";
-	private final String ADD_FAVOURITE = "Add favourite";
+	private static String JOIN_CHANNEL, CHANGE_NICK, OPEN_QUERY, ADD_FAVORITE;;
 
 	private int type, state;
 	private UIHandler uihandler;
@@ -104,7 +101,23 @@ public class Window extends Canvas implements CommandListener {
 		names = new Vector();
 		setHeaderVisible(showheader);
 
+		namecmdlist = new List(name, List.IMPLICIT);
+		namecmdlist.append("[Back]",null);
+		namecmdlist.append("Query",null);
+		namecmdlist.append("Whois",null);
+		namecmdlist.append("Kick",null);
+		namecmdlist.append("Op",null);
+		namecmdlist.append("Deop",null);
+		namecmdlist.append("Voice",null);
+		namecmdlist.append("Devoice",null);
+		namecmdlist.setCommandListener(this);
+
 		if (!initialized) {
+			JOIN_CHANNEL = "Join channel";
+			OPEN_QUERY = "Query";
+			CHANGE_NICK = "Change nick";
+			ADD_FAVORITE = "Add favourite";
+
 			cmd_ok = new Command("Ok", Command.OK, 10);
 
 			cmd_send = new Command("Send", Command.OK, 10);
@@ -759,7 +772,7 @@ public class Window extends Canvas implements CommandListener {
 			show();
 		}
 		else if (c == cmd_addfav) {
-			textbox = new TextBox(ADD_FAVOURITE, "", 128, TextField.ANY);
+			textbox = new TextBox(ADD_FAVORITE, "", 128, TextField.ANY);
 			textbox.setCommandListener(new TextboxListener());
 			textbox.addCommand(cmd_ok);
 			textbox.addCommand(cmd_cancel);
@@ -789,16 +802,6 @@ public class Window extends Canvas implements CommandListener {
 				listnames(c, s);
 			}
 			else {
-				namecmdlist = new List(name, List.IMPLICIT);
-				namecmdlist.append("[Back]",null);
-				namecmdlist.append("Query",null);
-				namecmdlist.append("Whois",null);
-				namecmdlist.append("Kick",null);
-				namecmdlist.append("Op",null);
-				namecmdlist.append("Deop",null);
-				namecmdlist.append("Voice",null);
-				namecmdlist.append("Devoice",null);
-				namecmdlist.setCommandListener(this);
 				uihandler.setDisplay(namecmdlist);
 				nameslist = null;
 			}
@@ -851,7 +854,7 @@ public class Window extends Canvas implements CommandListener {
 			if (c == cmd_send)
 				handleMsg(textbox.getString());
 			else if (c == cmd_cancel) {
-				if (textbox.getTitle().equals(ADD_FAVOURITE))
+				if (textbox.getTitle().equals(ADD_FAVORITE))
 					uihandler.setDisplay(favform);
 				else
 					show();
@@ -882,7 +885,7 @@ public class Window extends Canvas implements CommandListener {
 					uihandler.setDisplay(uihandler.getPrivate(str));
 					textbox = null;
 				}
-				else if (tbtitle.equals(ADD_FAVOURITE)) {
+				else if (tbtitle.equals(ADD_FAVORITE)) {
 					String str = textbox.getString();
 					uihandler.addFav(str);
 					uihandler.saveFavs();
