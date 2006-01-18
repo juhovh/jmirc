@@ -273,7 +273,6 @@ public class Listener extends Thread {
 							ch.changeNick(fromnick, firstparam);
 						}
 					}
-					System.out.println(uihandler.nick);
 				}
 				else if (command[0].equals("QUIT")) {
 					Hashtable ht = uihandler.getChannels();
