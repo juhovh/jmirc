@@ -163,21 +163,30 @@ public class Listener extends Thread {
 
 			if (cmdnum == 0) {
 				if (command[0].equals("MODE")) {
-					if (Utils.isChannel(command[1]) && command.length >= 3) {
-						String[] nicks = new String[3];
+					String abmodes = "beIqd,k";
+					String cmodes = "lfJ";
+					
+					if (Utils.isChannel(command[1])) {
+						String[] mparams = new String[3];
+						String newmodes;
 						String chaninfo;
-						Window win;
 						int counter = 0;
 						boolean adding = true;
 
-						win = uihandler.getChannel(command[1]);
-						nicks[2] = (command.length==5)?cmdline[2]:null;
-						nicks[1] = (command.length==5)?command[4]:null;
-						nicks[1] = (command.length==4)?cmdline[2]:nicks[1];
-						nicks[0] = (command.length>=4)?command[3]:cmdline[2];
+						ch = uihandler.getChannel(command[1]);
+						if (command.length >= 3) {
+							mparams[2] = (command.length==5)?cmdline[2]:null;
+							mparams[1] = (command.length==5)?command[4]:null;
+							mparams[1] = (command.length==4)?cmdline[2]:mparams[1];
+							mparams[0] = (command.length>=4)?command[3]:cmdline[2];
+							newmodes = command[2];
+						}
+						else
+							newmodes = cmdline[2];
 
-						for (int i=0; i<command[2].length(); i++) {
-							switch(command[2].charAt(i)) {
+						for (int i=0; i<newmodes.length(); i++) {
+							char modechar = newmodes.charAt(i);
+							switch(modechar) {
 								case '+':
 									adding = true;
 									break;
@@ -185,25 +194,34 @@ public class Listener extends Thread {
 									adding = false;
 									break;
 								case 'o':
-									win.changeMode(Window.MODE_OP, nicks[counter], adding);
+									if (mparams[counter] == null) break;
+									ch.changeNickMode(Window.MODE_OP, mparams[counter], adding);
 									counter++;
 									break;
 								case 'h':
-									win.changeMode(Window.MODE_HALFOP, nicks[counter], adding);
+									if (mparams[counter] == null) break;
+									ch.changeNickMode(Window.MODE_HALFOP, mparams[counter], adding);
 									counter++;
 									break;
 								case 'v':
-									win.changeMode(Window.MODE_VOICE, nicks[counter], adding);
+									if (mparams[counter] == null) break;
+									ch.changeNickMode(Window.MODE_VOICE, mparams[counter], adding);
 									counter++;
 									break;
+								default:
+									ch.changeChanMode(modechar, adding);
+									if (abmodes.indexOf(""+modechar) >= 0 ||
+									    (cmodes.indexOf(""+modechar) >= 0 && adding))
+										counter++;
+									break;
 							}
-							if (counter > 2 || nicks[counter] == null) break;
+							if (counter > 2) break;
 						}
-						chaninfo = "* " + fromnick + " changed mode: '" + command[2] + "' ";
-						for (int i=0; i < 3 && nicks[i] != null; i++)
-							chaninfo += " " + nicks[i];
+						chaninfo = "* " + fromnick + " changed mode: '" + newmodes + "' ";
+						for (int i=0; i < 3 && mparams[i] != null; i++)
+							chaninfo += " " + mparams[i];
 
-						win.writeAction(chaninfo);
+						ch.writeAction(chaninfo);
 					}
 				}
 				else if (command[0].equals("PRIVMSG")) {
@@ -342,6 +360,7 @@ public class Listener extends Thread {
 						if (channels !=null) {
 							for (int i=0; i<channels.length; i++) {
 								jmIrc.writeLine("JOIN " + channels[i].trim());
+								jmIrc.writeLine("MODE " + channels[i].trim());
 							}
 						}
 						needupdate = true;
@@ -382,8 +401,18 @@ public class Listener extends Thread {
 					case 321:  // RPL_LISTSTART
 					case 322:  // RPL_LIST
 					case 323:  // RPL_LISTEND
+						// FIXME: channel list not implemented
+						break;
 					case 324:  // RPL_CHANNELMODEIS
-						// FIXME: channel list and mode not implemented
+						String chanmodes;
+						
+						ch = uihandler.getChannel(command[2]);
+						if (command.length > 3)
+							chanmodes = command[3];
+						else
+							chanmodes = cmdline[2];
+						if (chanmodes.charAt(0) == '+')
+							ch.setChanModes(chanmodes.substring(1));
 						break;
 					case 331:  // RPL_NOTOPIC
 						uihandler.getChannel(command[2]).writeInfo("Channel has no topic");

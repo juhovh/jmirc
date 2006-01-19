@@ -1,5 +1,6 @@
 2006-01-19  Juho Vähä-Herttua
    * Clean up the UTF-8 code more and make it work better
+   * Fix the mode parser and show chanmodes in header
 
 2006-01-17  Juho Vähä-Herttua
    * Fix invites in both ways

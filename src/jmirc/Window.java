@@ -66,6 +66,7 @@ public class Window extends Canvas implements CommandListener {
 
 	private ChoiceGroup cg_favourites;
 
+	private StringBuffer chanmodes;
 	private String name, header, chansize, hilight;
 	private long keylocktime;
 	private int buflines;
@@ -98,6 +99,7 @@ public class Window extends Canvas implements CommandListener {
 
 		state = STATE_NONE;
 		textarea = new TextArea(0, 0, getWidth(), getHeight(), buflines, true);;
+		chanmodes = new StringBuffer();
 		names = new Vector();
 		setHeaderVisible(showheader);
 
@@ -442,17 +444,39 @@ public class Window extends Canvas implements CommandListener {
 		}
 	}
 
-	public void changeMode(char mode, String nick, boolean action) {
+	public void changeNickMode(char mode, String nick, boolean add) {
 		int idx;
-
+		
+		if (nick == null)
+			return;
 		if ((idx = getNickIndex(nick)) >= 0) {
 			char oldmode = ((String) names.elementAt(idx)).charAt(0);
 			deleteNick(nick);
-			if (action)
+			if (add)
 				addNick((char) (oldmode | mode), nick);
 			else
 				addNick((char) (oldmode & ~mode), nick);
 		}
+	}
+
+	public void changeChanMode(char mode, boolean add) {
+		int idx = chanmodes.toString().indexOf(""+mode);
+		if (add && idx < 0) {
+			int i;
+			for (i=0; i<chanmodes.length(); i++) {
+				if (chanmodes.charAt(i) > mode)
+					break;
+			}
+			chanmodes.insert(i, mode);
+		}
+		else if (!add && idx >= 0) {
+			chanmodes.deleteCharAt(idx);
+		}
+	}
+
+	public void setChanModes(String modes) {
+		chanmodes = new StringBuffer(modes);
+		repaint();
 	}
 
 	public void deleteNick(String nick) {
@@ -562,7 +586,9 @@ public class Window extends Canvas implements CommandListener {
 			// draw header text
 			g.setFont(headerfont);
 			g.setColor(0x000000);
-			if (headerfont.stringWidth(header + chansize) < getWidth()-5-i*5)
+			if (chanmodes.length() > 0 && headerfont.stringWidth(header + "(+" + chanmodes.toString() + ")" + chansize) < getWidth()-5-i*5)
+				g.drawString(header + "(+" + chanmodes.toString() + ")" + chansize, getWidth()-2, 0, g.RIGHT | g.TOP);
+			else if (headerfont.stringWidth(header + chansize) < getWidth()-5-i*5)
 				g.drawString(header + chansize, getWidth()-2, 0, g.RIGHT | g.TOP);
 			else {
 				// not enough space, we need to cut
@@ -871,6 +897,7 @@ public class Window extends Canvas implements CommandListener {
 						str = "#" + str;
 					show();
 					jmIrc.writeLine("JOIN " + str);
+					jmIrc.writeLine("MODE " + str);
 					textbox = null;
 				}
 				else if (tbtitle.equals(CHANGE_NICK)) {
