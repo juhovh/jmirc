@@ -44,7 +44,7 @@ public class SocketIrc extends IrcConnection {
 		String ret = null;
 
 		try {
-			connector = (StreamConnection) Connector.open("socket://" + host + ":" + port, Connector.READ_WRITE);
+			connector = (StreamConnection) Connector.open("socket://" + host + ":" + port, Connector.READ_WRITE, true);
 			in = connector.openDataInputStream();
 			out = connector.openDataOutputStream(); 
 

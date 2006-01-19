@@ -55,7 +55,7 @@ public class HttpIrc extends IrcConnection {
 		      "&data=" + Utils.URLEncode(stringToByteArray(init, encoding));
 
 		try {
-			c = (HttpConnection) Connector.open(url);
+			c = (HttpConnection) Connector.open(url, Connector.READ_WRITE, true);
 			c.setRequestMethod(HttpConnection.GET);
 			response = c.getResponseCode();
 			identifier = c.getHeaderField("X-Identifier");

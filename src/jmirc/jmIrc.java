@@ -280,8 +280,8 @@ public class jmIrc extends MIDlet implements CommandListener {
 				cg_misc.append("Use mIRC colours", null);
 				cg_misc.append("Use socket poll", null);
 				cg_misc.append("Print unhandled input", null);
-				cg_misc.append("Automatically detect UTF-8", null);
-				cg_misc.append("Always output UTF-8", null);
+				cg_misc.append("Detect UTF-8", null);
+				cg_misc.append("Output UTF-8", null);
 
 				cg_misc.setSelectedIndex(0, db.header);
 				cg_misc.setSelectedIndex(1, db.timestamp);
