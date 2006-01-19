@@ -179,51 +179,46 @@ public abstract class IrcConnection {
 		byte a, b, c;
 		StringBuffer ret = new StringBuffer();
 		
-		try {
-			for (int i=0; i<data.length; i++) {
+		for (int i=0; i<data.length; i++) {
+			try {
 				a = data[i];
 				if ((a&0x80) == 0)
 					ret.append((char) a);
 				else if ((a&0xe0) == 0xc0) {
-					b = data[++i];
-					if ((b&0xc0) == 0x80)
-						ret.append((char)(((a& 0x1F) << 6) | (b & 0x3F)));
+					b = data[i+1];
+					if ((b&0xc0) == 0x80) {
+						ret.append((char)(((a&0x1F) << 6) | (b&0x3F)));
+						i++;
+					}
 					else {
-						if (gracious) {
-							ret.append("?");
-							i -= 1;
-						}
-						else
-							throw new UTFDataFormatException("Illegal 2-byte group");
+						throw new UTFDataFormatException("Illegal 2-byte group");
 					}
 				}
 				else if ((a&0xf0) == 0xe0) {
-					b = data[++i];
-					c = data[++i];
+					b = data[i+1];
+					c = data[i+2];
 					if (((b&0xc0) == 0x80) && ((c&0xc0) == 0x80)) {
-						ret.append((char)(((a & 0x0F) << 12) | ((b & 0x3F) << 6) | (c & 0x3F)));
+						ret.append((char)(((a&0x0F) << 12) | ((b&0x3F) << 6) | (c&0x3F)));
+						i += 2;
 					}
 					else {
-						if (gracious) {
-							ret.append("?");
-							i -= 2;
-						}
-						else
-							throw new UTFDataFormatException("Illegal 3-byte group");
+						throw new UTFDataFormatException("Illegal 3-byte group");
 					}
 				}
 				else if (((a&0xf0) == 0xf0) || ((a&0xc0) == 0x80)) {
-					if (gracious)
-						ret.append("?");
-					else
-						throw new UTFDataFormatException("Illegal first byte of a group");
+					throw new UTFDataFormatException("Illegal first byte of a group");
 				}
+			} catch (UTFDataFormatException udfe) {
+				if (gracious)
+					ret.append("?");
+				else
+					throw udfe;
+			} catch (ArrayIndexOutOfBoundsException aioobe) {
+				if (gracious)
+					ret.append("?");
+				else
+					throw new UTFDataFormatException("Unexpected EOF");
 			}
-		} catch (ArrayIndexOutOfBoundsException aioobe) {
-			if (gracious)
-				ret.append("?");
-			else
-				throw new UTFDataFormatException("Unexpected EOF");
 		}
 		
 		return ret.toString();
