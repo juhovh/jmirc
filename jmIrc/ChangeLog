@@ -3,6 +3,7 @@
    * Fix the mode parser and show chanmodes in header
    * Add timeout exceptions to all connections
    * Fix bug in scrolling when buffer is full
+   * Make new UTF-8 option entrys smaller to fit the screen
 
 2006-01-17  Juho Vähä-Herttua
    * Fix invites in both ways

@@ -90,8 +90,13 @@ public class TextArea {
 	}
 
 	private void addLine(String[] strings) {
+		boolean end = isAtEndpos();
+		
 		scrollbuffer[bufindex] = strings;
 		bufindex = (bufindex+1)%MAX_LINES;
+
+		if (!end && emptylines == 0)
+			updatePosition(-1);
 
 		if (emptylines > 0) emptylines--;
 	}
