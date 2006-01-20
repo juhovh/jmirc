@@ -1,3 +1,9 @@
+2006-01-20  Juho Vähä-Herttua
+   * Move some advanced settings to interface settings
+   * Make font in TextArea.java configurable
+   * Make font size in windows configurable
+   * Add selection for font size to interface settings
+
 2006-01-19  Juho Vähä-Herttua
    * Clean up the UTF-8 code more and make it work better
    * Fix the mode parser and show chanmodes in header

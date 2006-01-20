@@ -32,7 +32,7 @@ public class UIHandler {
 	private boolean winlock;
 	private boolean usecol;
 	private boolean mirccol;
-	private int buflines;
+	private int fontsize, buflines;
 	private Hashtable channels, privates;
 	private Vector windows; // excludes console
 	private Vector favourites;
@@ -49,6 +49,7 @@ public class UIHandler {
 		header = db.header;
 		timestamp = db.timestamp;
 		hilight = db.hilight;
+		fontsize = db.fontsize;
 		buflines = db.buflines;
 		usecol = db.usecolor;
 		mirccol = db.usemirccol;
@@ -60,7 +61,7 @@ public class UIHandler {
 		windows = new Vector();
 		loadFavs();
 		currentwin = 0;
-		console = new Window(this, "Status", Window.TYPE_CONSOLE, hilight, header, timestamp, usecol, mirccol, buflines);
+		console = new Window(this, "Status", Window.TYPE_CONSOLE, hilight, header, timestamp, usecol, mirccol, fontsize, buflines);
 		addWindow(console);
 	}
 
@@ -75,7 +76,7 @@ public class UIHandler {
 		win = (Window) channels.get(channel.toUpperCase());
 
 		if (win == null) {
-			win = new Window(this, channel, Window.TYPE_CHANNEL, hilight, header, timestamp, usecol, mirccol, buflines);
+			win = new Window(this, channel, Window.TYPE_CHANNEL, hilight, header, timestamp, usecol, mirccol, fontsize, buflines);
 			channels.put(channel.toUpperCase(), win);
 			addWindow(win);
 		}
@@ -88,7 +89,7 @@ public class UIHandler {
 		priv = priv.trim();
 		win = (Window) privates.get(priv.toUpperCase());
 		if (win == null) {
-			win = new Window(this, priv, Window.TYPE_PRIVATE, hilight, header, timestamp, usecol, mirccol, buflines);
+			win = new Window(this, priv, Window.TYPE_PRIVATE, hilight, header, timestamp, usecol, mirccol, fontsize, buflines);
 			privates.put(priv.toUpperCase(), win);
 			addWindow(win);
 

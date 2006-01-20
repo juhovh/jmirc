@@ -41,10 +41,6 @@ public class Database {
 
 	// other options
 	int profileidx = -1;
-	boolean header=true;
-	boolean timestamp=false;
-	boolean usecolor=true;
-	boolean usemirccol=false;
 	boolean usepoll=false;
 	boolean showinput=false;
 	String encoding = "ISO-8859-1";
@@ -52,6 +48,13 @@ public class Database {
 	boolean utf8output=false;
 	String hilight = "";
 	int buflines = 50;
+
+	boolean header=true;
+	boolean timestamp=false;
+	boolean usecolor=true;
+	boolean usemirccol=false;
+	int fontsize=0;
+	
 	boolean usehttp=false;
 	String gwhost =  "";
 	int gwport = 8080;
@@ -104,9 +107,11 @@ public class Database {
 				rs.addRecord(temp, 0, temp.length);
 				rs.addRecord(temp, 0, temp.length);
 				rs.addRecord(temp, 0, temp.length);
+				rs.addRecord(temp, 0, temp.length);
 
 				save_profile();
 				save_advanced();
+				save_interface();
 				save_http();
 			}
 			else {
@@ -114,10 +119,6 @@ public class Database {
 				profileidx = din.readInt();
 				
 				din = new DataInputStream(new ByteArrayInputStream(rs.getRecord(3)));
-				header = din.readBoolean();
-				timestamp = din.readBoolean();
-				usecolor = din.readBoolean();
-				usemirccol = din.readBoolean();
 				usepoll = din.readBoolean();
 				showinput = din.readBoolean();
 				encoding = din.readUTF();
@@ -125,8 +126,15 @@ public class Database {
 				utf8output = din.readBoolean();
 				buflines = din.readInt();
 				hilight = din.readUTF();
-
+				
 				din = new DataInputStream(new ByteArrayInputStream(rs.getRecord(4)));
+				header = din.readBoolean();
+				timestamp = din.readBoolean();
+				usecolor = din.readBoolean();
+				usemirccol = din.readBoolean();
+				fontsize = din.readInt();
+				
+				din = new DataInputStream(new ByteArrayInputStream(rs.getRecord(5)));
 				usehttp = din.readBoolean();
 				gwhost = din.readUTF();
 				gwport = din.readInt();
@@ -362,10 +370,6 @@ public class Database {
 			DataOutputStream dos = new DataOutputStream(baos);
 			byte[] byteout;
 
-			dos.writeBoolean(header);
-			dos.writeBoolean(timestamp);
-			dos.writeBoolean(usecolor);
-			dos.writeBoolean(usemirccol);
 			dos.writeBoolean(usepoll);
 			dos.writeBoolean(showinput);
 			dos.writeUTF(encoding);
@@ -388,6 +392,32 @@ public class Database {
 		}
 	}
 
+	public void save_interface() {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream dos = new DataOutputStream(baos);
+			byte[] byteout;
+
+			dos.writeBoolean(header);
+			dos.writeBoolean(timestamp);
+			dos.writeBoolean(usecolor);
+			dos.writeBoolean(usemirccol);
+			dos.writeInt(fontsize);
+			
+			byteout = baos.toByteArray();
+			dos.close();
+			baos.close();
+
+			RecordStore rs = RecordStore.openRecordStore(STORE_CONFIG, true);
+			rs.setRecord(4, byteout, 0, byteout.length);
+			rs.closeRecordStore();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			// error in saving settings, should handle this
+		}
+	}
+	
 	public void save_http() {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -405,7 +435,7 @@ public class Database {
 			baos.close();
 
 			RecordStore rs = RecordStore.openRecordStore(STORE_CONFIG, true);
-			rs.setRecord(4, byteout, 0, byteout.length);
+			rs.setRecord(5, byteout, 0, byteout.length);
 			rs.closeRecordStore();
 		}
 		catch(Exception e) {

@@ -29,6 +29,7 @@ public class TextArea {
 	private int top;
 	private int width;
 	private int height;
+	private Font font;
 	private int fontheight;
 
 	private int position, emptylines;
@@ -39,15 +40,16 @@ public class TextArea {
 
 	private final int MAX_LINES;;
 		
-	public TextArea(int left, int top, int width, int height, int buflines, boolean scrollbar) {
+	public TextArea(int left, int top, int width, int height, Font font, int buflines, boolean scrollbar) {
 		position = 0;
 
 		this.left = left;
 		this.top = top;
 		this.width = width;
 		this.height = height;
+		this.font = font;
 		this.scrollbar = scrollbar;
-		fontheight = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL).getHeight();
+		fontheight = font.getHeight();
 
 		MAX_LINES = buflines;
 		scrollbuffer = new String[MAX_LINES][];
@@ -114,7 +116,7 @@ public class TextArea {
 
 		rets = new Vector();
 		retc = new Vector();
-		font = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
+		font = this.font;
 		new_width = 0;
 		endspace = false;
 
@@ -128,7 +130,7 @@ public class TextArea {
 			currentcol = strings[i].charAt(0);
 			strings[i] = strings[i].substring(1);
 
-			font = Font.getFont(Font.FACE_SYSTEM, (currentcol >> 8)&0x0f, Font.SIZE_SMALL);
+			font = Font.getFont(font.getFace(), (currentcol >> 8)&0x0f, font.getSize());
 			s = Utils.splitString(strings[i], " ");
 			for (int j=0; j<s.length; j++) {
 				// Notice that width includes now scrollbar so it's decreased here in 3 places
@@ -215,7 +217,7 @@ public class TextArea {
 		int mls = (height / fontheight); // max lines in screen
 		char lastcolour;
 
-		g.setFont(Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL));
+		g.setFont(font);
 		g.setColor(0);
 
 		// loops through every line on screen
@@ -236,7 +238,7 @@ public class TextArea {
 				if (currentstr.charAt(0) == ' ' && j==0) currentstr = currentstr.substring(1);
 				if (currentcol != lastcolour) {
 					// set new style
-					g.setFont(Font.getFont(Font.FACE_SYSTEM, (currentcol >> 8)&0x0f, Font.SIZE_SMALL));
+					g.setFont(Font.getFont(font.getFace(), (currentcol >> 8)&0x0f, font.getSize()));
 					// set background colour and paint it to screen
 					g.setColor(getColor((currentcol >> 4)&0x0f));
 					g.fillRect(leftpixels, top+i*fontheight, g.getFont().stringWidth(currentstr), fontheight);
