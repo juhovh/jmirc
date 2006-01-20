@@ -31,7 +31,8 @@ public class jmIrc extends MIDlet implements CommandListener {
 	private final static int FORM_CONFIG = 2;
 	private final static int FORM_CONFIG_EDIT = 3;
 	private final static int FORM_ADVANCED = 4;
-	private final static int FORM_HTTP = 5;
+	private final static int FORM_INTERFACE = 5;
+	private final static int FORM_HTTP = 6;
 
 	private Display display;
 	protected static Form mainform;
@@ -45,7 +46,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 	private static UIHandler uihandler;
 	private static Database db;
 
-	private Command cmd_connect, cmd_profiles, cmd_advanced, cmd_http, cmd_exit;
+	private Command cmd_connect, cmd_profiles, cmd_advanced, cmd_interface, cmd_http, cmd_exit;
 	private Command cmd_profile_add, cmd_profile_edit, cmd_profile_delete;
 	private Command cmd_ok, cmd_cancel;
 
@@ -53,7 +54,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 	private TextField tf_hilight, tf_passwd, tf_buflines;
 	private TextField tf_gwhost, tf_gwport, tf_gwpasswd, tf_polltime;
 
-	private ChoiceGroup cg_misc, cg_encoding;
+	private ChoiceGroup cg_misc, cg_interface, cg_fontsize, cg_encoding;
 	private ChoiceGroup cg_usehttp;
 
 	private List list_profile;
@@ -64,7 +65,8 @@ public class jmIrc extends MIDlet implements CommandListener {
 		cmd_connect = new Command("Connect", Command.OK, 1);
 		cmd_profiles = new Command("Profiles", Command.SCREEN, 2);
 		cmd_advanced = new Command("Advanced", Command.SCREEN, 3);
-		cmd_http = new Command("HTTP Config", Command.SCREEN, 4);
+		cmd_interface = new Command("Interface", Command.SCREEN, 4);
+		cmd_http = new Command("HTTP Config", Command.SCREEN, 5);
 		cmd_exit = new Command("Exit", Command.EXIT, 6);
 
 		cmd_profile_add = new Command("Add new profile", Command.SCREEN, 2);
@@ -80,6 +82,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 		mainform.addCommand(cmd_connect);
 		mainform.addCommand(cmd_profiles);
 		mainform.addCommand(cmd_advanced);
+		mainform.addCommand(cmd_interface);
 		mainform.addCommand(cmd_http);
 		mainform.addCommand(cmd_exit);
 		mainform.setCommandListener(this);
@@ -173,14 +176,10 @@ public class jmIrc extends MIDlet implements CommandListener {
 			else if (currentform == FORM_ADVANCED) {
 				currentform = FORM_MAIN;
 				if (cmd == cmd_ok) {
-					db.header = cg_misc.isSelected(0);
-					db.timestamp = cg_misc.isSelected(1);
-					db.usecolor = cg_misc.isSelected(2);
-					db.usemirccol = cg_misc.isSelected(3);
-					db.usepoll = cg_misc.isSelected(4);
-					db.showinput = cg_misc.isSelected(5);
-					db.utf8detect = cg_misc.isSelected(6);
-					db.utf8output = cg_misc.isSelected(7);
+					db.usepoll = cg_misc.isSelected(0);
+					db.showinput = cg_misc.isSelected(1);
+					db.utf8detect = cg_misc.isSelected(2);
+					db.utf8output = cg_misc.isSelected(3);
 					db.encoding = cg_encoding.getString(cg_encoding.getSelectedIndex());
 					db.buflines = parseInt(tf_buflines.getString());
 					db.hilight = tf_hilight.getString();
@@ -190,6 +189,20 @@ public class jmIrc extends MIDlet implements CommandListener {
 				cg_encoding = null;
 				tf_buflines = null;
 				tf_hilight = null;
+				display.setCurrent(mainform);
+			}
+			else if (currentform == FORM_INTERFACE) {
+				currentform = FORM_MAIN;
+				if (cmd == cmd_ok) {
+					db.header = cg_interface.isSelected(0);
+					db.timestamp = cg_interface.isSelected(1);
+					db.usecolor = cg_interface.isSelected(2);
+					db.usemirccol = cg_interface.isSelected(3);
+					db.fontsize = cg_fontsize.getSelectedIndex();
+					db.save_interface();
+				}
+				cg_interface = null;
+				cg_fontsize = null;
 				display.setCurrent(mainform);
 			}
 			else if (currentform == FORM_HTTP) {
@@ -274,23 +287,15 @@ public class jmIrc extends MIDlet implements CommandListener {
 			}
 			else if (cmd == cmd_advanced) {
 				cg_misc = new ChoiceGroup("Misc settings", ChoiceGroup.MULTIPLE);
-				cg_misc.append("Use status header", null);
-				cg_misc.append("Use timestamp", null);
-				cg_misc.append("Use colours", null);
-				cg_misc.append("Use mIRC colours", null);
 				cg_misc.append("Use socket poll", null);
 				cg_misc.append("Print unhandled input", null);
 				cg_misc.append("Detect UTF-8", null);
 				cg_misc.append("Output UTF-8", null);
 
-				cg_misc.setSelectedIndex(0, db.header);
-				cg_misc.setSelectedIndex(1, db.timestamp);
-				cg_misc.setSelectedIndex(2, db.usecolor);
-				cg_misc.setSelectedIndex(3, db.usemirccol);
-				cg_misc.setSelectedIndex(4, db.usepoll);
-				cg_misc.setSelectedIndex(5, db.showinput);
-				cg_misc.setSelectedIndex(6, db.utf8detect);
-				cg_misc.setSelectedIndex(7, db.utf8output);
+				cg_misc.setSelectedIndex(0, db.usepoll);
+				cg_misc.setSelectedIndex(1, db.showinput);
+				cg_misc.setSelectedIndex(2, db.utf8detect);
+				cg_misc.setSelectedIndex(3, db.utf8output);
 
 				cg_encoding = new ChoiceGroup("Character encoding", ChoiceGroup.EXCLUSIVE);
 				cg_encoding.append("ISO-8859-1", null);
@@ -314,6 +319,29 @@ public class jmIrc extends MIDlet implements CommandListener {
 				cfgform.append(tf_buflines);
 				cfgform.append(tf_hilight);
 				currentform = FORM_ADVANCED;
+			}
+			else if (cmd == cmd_interface) {
+				cg_interface = new ChoiceGroup("Interface settings", ChoiceGroup.MULTIPLE);
+				cg_interface.append("Use status header", null);
+				cg_interface.append("Use timestamp", null);
+				cg_interface.append("Use colours", null);
+				cg_interface.append("Use mIRC colours", null);
+				
+				cg_interface.setSelectedIndex(0, db.header);
+				cg_interface.setSelectedIndex(1, db.timestamp);
+				cg_interface.setSelectedIndex(2, db.usecolor);
+				cg_interface.setSelectedIndex(3, db.usemirccol);
+				
+				cg_fontsize = new ChoiceGroup("Font size", ChoiceGroup.EXCLUSIVE);
+				cg_fontsize.append("Small", null);
+				cg_fontsize.append("Medium", null);
+				cg_fontsize.append("Large", null);
+				cg_fontsize.setSelectedIndex(db.fontsize, true);
+
+				cfgform = new Form("Interface Config");
+				cfgform.append(cg_interface);
+				cfgform.append(cg_fontsize);
+				currentform = FORM_INTERFACE;
 			}
 			else if (cmd == cmd_http) {				
 				cg_usehttp = new ChoiceGroup("HTTP", ChoiceGroup.MULTIPLE);

@@ -82,7 +82,7 @@ public class Window extends Canvas implements CommandListener {
 	private List nameslist;
 	private List namecmdlist;
 	
-	public Window(UIHandler uihandler, String name, int type, String hilight, boolean showheader, boolean timestamp, boolean usecol, boolean mirccol, int buflines) {
+	public Window(UIHandler uihandler, String name, int type, String hilight, boolean showheader, boolean timestamp, boolean usecol, boolean mirccol, int fontsize, int buflines) {
 		super();
 
 		this.uihandler = uihandler;
@@ -98,7 +98,13 @@ public class Window extends Canvas implements CommandListener {
 		this.buflines = buflines;
 
 		state = STATE_NONE;
-		textarea = new TextArea(0, 0, getWidth(), getHeight(), buflines, true);;
+		int textfontsize = 0;
+		if (fontsize == 0)
+			textfontsize = Font.SIZE_SMALL;
+		if (fontsize == 2)
+			textfontsize = Font.SIZE_LARGE;
+		
+		textarea = new TextArea(0, 0, getWidth(), getHeight(), Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, textfontsize), buflines, true);;
 		chanmodes = new StringBuffer();
 		names = new Vector();
 		setHeaderVisible(showheader);
