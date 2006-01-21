@@ -3,6 +3,7 @@
    * Make font in TextArea.java configurable
    * Make font size in windows configurable
    * Add selection for font size to interface settings
+   * Make whois more verbose also from names list
 
 2006-01-19  Juho Vähä-Herttua
    * Clean up the UTF-8 code more and make it work better
