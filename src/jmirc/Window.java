@@ -109,17 +109,6 @@ public class Window extends Canvas implements CommandListener {
 		names = new Vector();
 		setHeaderVisible(showheader);
 
-		namecmdlist = new List(name, List.IMPLICIT);
-		namecmdlist.append("[Back]",null);
-		namecmdlist.append("Query",null);
-		namecmdlist.append("Whois",null);
-		namecmdlist.append("Kick",null);
-		namecmdlist.append("Op",null);
-		namecmdlist.append("Deop",null);
-		namecmdlist.append("Voice",null);
-		namecmdlist.append("Devoice",null);
-		namecmdlist.setCommandListener(this);
-
 		if (!initialized) {
 			JOIN_CHANNEL = "Join channel";
 			OPEN_QUERY = "Query";
@@ -351,7 +340,8 @@ public class Window extends Canvas implements CommandListener {
 		String[] hilightarr = Utils.splitString(hilight, " ");
 
 		for (int i=0; i<hilightarr.length; i++) {
-			if (!hilightarr[i].equals("") && text.indexOf(hilightarr[i]) >= 0) {
+			if (!hilightarr[i].equals("") &&
+			    text.toLowerCase().indexOf(hilightarr[i].toLowerCase()) >= 0) {
 				usehilight = true;
 				break;
 			}
@@ -834,6 +824,18 @@ public class Window extends Canvas implements CommandListener {
 				listnames(c, s);
 			}
 			else {
+				namecmdlist = new List(name, List.IMPLICIT);
+				namecmdlist.append("[Back]",null);
+				namecmdlist.append("Query",null);
+				namecmdlist.append("Whois",null);
+				namecmdlist.append("Kick",null);
+				namecmdlist.append("Ban",null);
+				namecmdlist.append("Op",null);
+				namecmdlist.append("Deop",null);
+				namecmdlist.append("Voice",null);
+				namecmdlist.append("Devoice",null);
+				namecmdlist.setCommandListener(this);
+
 				uihandler.setDisplay(namecmdlist);
 				nameslist = null;
 			}
@@ -859,6 +861,11 @@ public class Window extends Canvas implements CommandListener {
 			}
 			else if (name.equals("Kick")) {
 				jmIrc.writeLine("KICK " + this.name + " " + nick.substring(1) + " :" + uihandler.nick);
+				show();
+				namecmdlist = null;
+			}
+			else if (name.equals("Ban")) {
+				jmIrc.writeLine("MODE " + this.name + " +b " + nick.substring(1) + "!*@*");
 				show();
 				namecmdlist = null;
 			}

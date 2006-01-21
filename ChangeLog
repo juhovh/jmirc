@@ -1,3 +1,8 @@
+2006-01-21  Juho Vähä-Herttua
+   * Make hilight checking case insensitive
+   * Add ban to names nick option list
+   * Fix names nick option bug introduced earlier
+
 2006-01-20  Juho Vähä-Herttua
    * Move some advanced settings to interface settings
    * Make font in TextArea.java configurable
