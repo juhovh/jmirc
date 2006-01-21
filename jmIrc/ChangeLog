@@ -2,6 +2,7 @@
    * Make hilight checking case insensitive
    * Add ban to names nick option list
    * Fix names nick option bug introduced earlier
+   * Add support for /mode and /join commands
 
 2006-01-20  Juho Vähä-Herttua
    * Move some advanced settings to interface settings

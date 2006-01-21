@@ -253,6 +253,9 @@ public class Window extends Canvas implements CommandListener {
 						if (type == TYPE_CHANNEL)
 							jmIrc.writeLine("TOPIC " + name + " :" + str.substring(7));
 					}
+					else if (command.equals("/J") || command.equals("/JOIN")) {
+						jmIrc.writeLine("JOIN " + str.substring(command.length()+1));
+					}
 					else if (command.equals("/PART")) {
 						if (Utils.isChannel(s[1])) {
 							jmIrc.writeLine("PART " + s[1] + " :" + (s.length > 2 ? str.substring(6 + s[1].length()) : ""));
@@ -269,6 +272,9 @@ public class Window extends Canvas implements CommandListener {
 							jmIrc.writeLine("KICK " + name + " " + s[1] + " :" + (s.length > 2 ? str.substring(7 + s[1].length()) : ""));
 						else
 							uihandler.getConsole().writeInfo("Can only kick from channels");
+					}
+					else if (command.equals("/MODE")) {
+						jmIrc.writeLine("MODE " + str.substring(6));
 					}
 					else if (command.equals("/QUIT")) {
 						jmIrc.disconnect("QUIT :" + str.substring(6));
