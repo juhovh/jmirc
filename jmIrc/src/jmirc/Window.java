@@ -853,7 +853,7 @@ public class Window extends Canvas implements CommandListener {
 				namecmdlist = null;
 			}
 			else if (name.equals("Whois")) {
-				jmIrc.writeLine("WHOIS " + nick.substring(1));
+				jmIrc.writeLine("WHOIS " + nick.substring(1) + " " + nick.substring(1));
 				show();
 				namecmdlist = null;
 			}
