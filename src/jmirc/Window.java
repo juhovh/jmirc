@@ -902,7 +902,7 @@ public class Window extends Canvas implements CommandListener {
 			String tbstring = textbox.getString();
 			textbox = null;
 			
-			else if (c == cmd_send)
+			if (c == cmd_send)
 				handleMsg(tbstring);
 			else if (c == cmd_cancel) {
 				if (tbtitle.equals(ADD_FAVORITE))
