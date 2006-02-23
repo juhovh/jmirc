@@ -229,7 +229,6 @@ public class Window extends Canvas implements CommandListener {
 						else {
 							jmIrc.writeLine("PRIVMSG " + s[1] +  " :" + str.substring(6 + s[1].length()));
 							win.write(uihandler.nick, str.substring(6 + s[1].length()));
-							textbox = null;
 							win.show();
 							return;
 						}
@@ -295,7 +294,6 @@ public class Window extends Canvas implements CommandListener {
 				}
 			}
 		}
-		textbox = null;
 		show();
 	}
 	
@@ -896,44 +894,42 @@ public class Window extends Canvas implements CommandListener {
 	private class TextboxListener implements CommandListener {
 		public void commandAction(Command c, Displayable s) {
 			uihandler.setWinlock(false);
-			if (c == cmd_send)
-				handleMsg(textbox.getString());
+			if (textbox == null) {
+				return;
+			}
+			
+			String tbtitle = textbox.getTitle();
+			String tbstring = textbox.getString();
+			textbox = null;
+			
+			else if (c == cmd_send)
+				handleMsg(tbstring);
 			else if (c == cmd_cancel) {
-				if (textbox.getTitle().equals(ADD_FAVORITE))
+				if (tbtitle.equals(ADD_FAVORITE))
 					uihandler.setDisplay(favform);
 				else
 					show();
-
-				textbox = null;
 			}
 			else if (c == cmd_ok) {
-				if (textbox.getString().trim().equals("")) return;
-				String tbtitle = textbox.getTitle();
+				if (tbstring.trim().equals("")) return;
 
 				if (tbtitle.equals(JOIN_CHANNEL)) {
-					String str = textbox.getString();
-					if (!Utils.isChannel(str))
-						str = "#" + str;
+					if (!Utils.isChannel(tbstring))
+						tbstring = "#" + tbstring;
+					jmIrc.writeLine("JOIN " + tbstring);
+					jmIrc.writeLine("MODE " + tbstring);
 					show();
-					jmIrc.writeLine("JOIN " + str);
-					jmIrc.writeLine("MODE " + str);
-					textbox = null;
 				}
 				else if (tbtitle.equals(CHANGE_NICK)) {
-					String str = textbox.getString();
-					jmIrc.writeLine("NICK " + str);
-					uihandler.nick = str;
+					jmIrc.writeLine("NICK " + tbstring);
+					uihandler.nick = tbstring;
 					show();
-					textbox = null;
 				}
 				else if (tbtitle.equals(OPEN_QUERY)) {
-					String str = textbox.getString();
-					uihandler.setDisplay(uihandler.getPrivate(str));
-					textbox = null;
+					uihandler.setDisplay(uihandler.getPrivate(tbstring));
 				}
 				else if (tbtitle.equals(ADD_FAVORITE)) {
-					String str = textbox.getString();
-					uihandler.addFav(str);
+					uihandler.addFav(tbstring);
 					uihandler.saveFavs();
 
 					Vector list = uihandler.getFavs();
