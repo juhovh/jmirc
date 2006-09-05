@@ -1,3 +1,6 @@
+2006-09-05  Juho Vähä-Herttua
+   * Change maximum length of username to be 25, not 8
+
 2006-01-21  Juho Vähä-Herttua
    * Make hilight checking case insensitive
    * Add ban to names nick option list
