@@ -260,7 +260,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 				tf_host = new TextField("IRC server", db.host, 200, TextField.URL);
 				tf_port = new TextField("IRC server port", new Integer(db.port).toString(), 5, TextField.NUMERIC);
 				tf_channels = new TextField("Channels", db.channels, 600, TextField.ANY);
-				tf_username = new TextField("Username", db.username, 20, TextField.ANY);
+				tf_username = new TextField("Username", db.username, 25, TextField.ANY);
 				tf_realname = new TextField("Real name", db.realname, 50, TextField.ANY);
 				tf_passwd = new TextField("Server password", db.passwd, 10, TextField.PASSWORD);
 
