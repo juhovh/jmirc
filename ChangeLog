@@ -1,3 +1,7 @@
+2006-09-22  Juho Vähä-Herttua
+   * Add support for Windows-1255 (Hebrew) codepage
+   * Add better support for right-to-left languages
+
 2006-09-05  Juho Vähä-Herttua
    * Change maximum length of username to be 25, not 8
 

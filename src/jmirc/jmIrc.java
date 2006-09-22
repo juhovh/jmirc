@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2004  Juho Vähä-Herttua
+Copyright (C) 2004-2006  Juho Vähä-Herttua
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -303,11 +303,13 @@ public class jmIrc extends MIDlet implements CommandListener {
 				cg_encoding.append("UTF-8", null);
 				cg_encoding.append("KOI8-R", null);
 				cg_encoding.append("Windows-1251", null);
+				cg_encoding.append("Windows-1255", null);
 				if (db.encoding.equals("ISO-8859-1")) cg_encoding.setSelectedIndex(0, true);
 				else if (db.encoding.equals("ISO-8859-2")) cg_encoding.setSelectedIndex(1, true);
 				else if (db.encoding.equals("UTF-8")) cg_encoding.setSelectedIndex(2, true);
 				else if (db.encoding.equals("KOI8-R")) cg_encoding.setSelectedIndex(3, true);
 				else if (db.encoding.equals("Windows-1251")) cg_encoding.setSelectedIndex(4, true);
+				else if (db.encoding.equals("Windows-1255")) cg_encoding.setSelectedIndex(5, true);
 				else cg_encoding.setSelectedIndex(0, true);
 
 				tf_buflines = new TextField("Backbuffer lines", new Integer(db.buflines).toString(), 3, TextField.NUMERIC);
