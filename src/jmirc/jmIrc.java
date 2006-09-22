@@ -89,8 +89,8 @@ public class jmIrc extends MIDlet implements CommandListener {
 		running = false;
 	}
 
-	private void updateMainForm() {
-		for (int i=mainform.size(); i>0; i--)
+	private void updateMainform() {
+		for (int i=mainform.size()-1; i>=0; i--)
 			mainform.delete(i);
 		mainform.append("jmIrc " + VERSION + "\n");
 		mainform.append("By juhovh\n");
@@ -100,7 +100,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 	public void startApp() {
 		if (!running) {
 			db.load();
-			updateMainForm();
+			updateMainform();
 			display.setCurrent(mainform);
 			currentform = FORM_MAIN;
 			running = true;
@@ -136,7 +136,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 				list_profile = null;
 
 				db.setProfile(db.profileidx);
-				updateMainForm();
+				updateMainform();
 				display.setCurrent(mainform);
 			}
 			else if (currentform == FORM_CONFIG || currentform == FORM_CONFIG_EDIT) {

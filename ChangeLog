@@ -2,6 +2,7 @@
    * Add support for Windows-1255 (Hebrew) codepage
    * Add better support for right-to-left languages
    * Show selected profile in main screen (idea from BBirc)
+   * Fix a crash bug related to showing the profile
 
 2006-09-05  Juho Vähä-Herttua
    * Change maximum length of username to be 25, not 8
