@@ -77,8 +77,6 @@ public class jmIrc extends MIDlet implements CommandListener {
 		cmd_cancel = new Command("Cancel", Command.EXIT, 10);
 
 		mainform = new Form("jmIrc");
-		mainform.append("jmIrc " + VERSION + "\n");
-		mainform.append("By juhovh");
 		mainform.addCommand(cmd_connect);
 		mainform.addCommand(cmd_profiles);
 		mainform.addCommand(cmd_advanced);
@@ -91,9 +89,18 @@ public class jmIrc extends MIDlet implements CommandListener {
 		running = false;
 	}
 
+	private void updateMainForm() {
+		for (int i=mainform.size(); i>0; i--)
+			mainform.delete(i);
+		mainform.append("jmIrc " + VERSION + "\n");
+		mainform.append("By juhovh\n");
+		mainform.append("Profile: " + db.profilename);
+	}
+
 	public void startApp() {
 		if (!running) {
 			db.load();
+			updateMainForm();
 			display.setCurrent(mainform);
 			currentform = FORM_MAIN;
 			running = true;
@@ -129,6 +136,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 				list_profile = null;
 
 				db.setProfile(db.profileidx);
+				updateMainForm();
 				display.setCurrent(mainform);
 			}
 			else if (currentform == FORM_CONFIG || currentform == FORM_CONFIG_EDIT) {
