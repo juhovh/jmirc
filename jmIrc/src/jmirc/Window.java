@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2004  Juho Vähä-Herttua
+Copyright (C) 2004-2006  Juho Vähä-Herttua
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -357,7 +357,7 @@ public class Window extends Canvas implements CommandListener {
 			if (uihandler.keylock) uihandler.playAlarm(false);
 		}
 		else {
-			write(new String[] {"<", nick, "> " + text}, new char[] {0xf0,0xf4,0xf0});
+			write(new String[] {"<", nick, "> ", text}, new char[] {0xf0,0xf4,0xf0,0xf0});
 			if (state<STATE_MSG) state = STATE_MSG;
 		}
 	}
@@ -368,7 +368,7 @@ public class Window extends Canvas implements CommandListener {
 	}
 
 	public void writeInfo(String str) {
-		write(new String[] {"*** " + str}, new char[] {0xf2});
+		write(new String[] {"*** ", str}, new char[] {0xf2, 0xf2});
 		if (state<STATE_INFO) state = STATE_INFO;
 	}
 	
@@ -586,17 +586,20 @@ public class Window extends Canvas implements CommandListener {
 			// draw header text
 			g.setFont(headerfont);
 			g.setColor(0x000000);
-			if (chanmodes.length() > 0 && headerfont.stringWidth(header + "(+" + chanmodes.toString() + ")" + chansize) < getWidth()-5-i*5)
-				g.drawString(header + "(+" + chanmodes.toString() + ")" + chansize, getWidth()-2, 0, g.RIGHT | g.TOP);
-			else if (headerfont.stringWidth(header + chansize) < getWidth()-5-i*5)
-				g.drawString(header + chansize, getWidth()-2, 0, g.RIGHT | g.TOP);
-			else {
+
+			String chantext = header;
+			String infotext = chansize;
+			if (chanmodes.length() > 0 && headerfont.stringWidth(header + "(+" + chanmodes.toString() + ")" + chansize) < getWidth()-5-i*5) {
+				infotext = "(+" + chanmodes.toString() + ")" + chansize;
+			} else if (headerfont.stringWidth(header + chansize) >= getWidth()-5-i*5) {
 				// not enough space, we need to cut
 				int textwidth = getWidth()-5-i*5-headerfont.stringWidth(chansize);
 				textwidth -= headerfont.stringWidth(".." + header.substring(header.length()-2));
 				for (i=header.length()-3; i>=0 && headerfont.substringWidth(header, 0, i)>textwidth; i--);
-				g.drawString(header.substring(0, i) + ".." + header.substring(header.length()-2) + chansize, getWidth()-2, 0, g.RIGHT | g.TOP);
+				chantext = header.substring(0, i) + ".." + header.substring(header.length()-2);
 			}
+			g.drawString(infotext, getWidth()-2, 0, g.RIGHT | g.TOP);
+			g.drawString(chantext, getWidth()-2-headerfont.stringWidth(infotext), 0, g.RIGHT | g.TOP);
 
 			if (uihandler.keylock) {
 				int keyx=3, keyy=5;
