@@ -1,5 +1,6 @@
 2006-09-25  Juho Vähä-Herttua
    * Change header font to use same size with other text
+   * Make default profile name empty again
 
 2006-09-22  Juho Vähä-Herttua
    * Add support for Windows-1255 (Hebrew) codepage

@@ -90,11 +90,15 @@ public class jmIrc extends MIDlet implements CommandListener {
 	}
 
 	private void updateMainform() {
+		String selprofile = db.profilename;
+		if ("".equals(selprofile))
+			selprofile = "Default";
+		
 		for (int i=mainform.size()-1; i>=0; i--)
 			mainform.delete(i);
 		mainform.append("jmIrc " + VERSION + "\n");
 		mainform.append("By juhovh\n");
-		mainform.append("Profile: " + db.profilename);
+		mainform.append("Profile: " + selprofile);
 	}
 
 	public void startApp() {

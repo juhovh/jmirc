@@ -188,7 +188,7 @@ public class Database {
 
 	public void setProfile(int index) {
 		if (index < 0) {
-			profilename = "Default";
+			profilename = "";
 			nick = "";
 			altnick = "";
 			host =  "irc.us.ircnet.net";
