@@ -48,6 +48,7 @@ public class Window extends Canvas implements CommandListener {
 	private UIHandler uihandler;
 	private Vector names;
 
+	private Font headerfont;
 	private TextBox textbox;
 	private Form favform;
 
@@ -104,6 +105,7 @@ public class Window extends Canvas implements CommandListener {
 		if (fontsize == 2)
 			textfontsize = Font.SIZE_LARGE;
 		
+		headerfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, textfontsize);
 		textarea = new TextArea(0, 0, getWidth(), getHeight(), Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, textfontsize), buflines, true);;
 		chanmodes = new StringBuffer();
 		names = new Vector();
@@ -174,9 +176,8 @@ public class Window extends Canvas implements CommandListener {
 
 	/* edit header visibility and update it */
 	public void setHeaderVisible(boolean visible) {
-		int headerheight;
 		if (visible) {
-			int hheight = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL).getHeight();
+			int hheight = headerfont.getHeight();
 			textarea.setSize(hheight, getHeight()-hheight);
 		}
 		else
@@ -554,7 +555,6 @@ public class Window extends Canvas implements CommandListener {
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		if (showheader) {
-			Font headerfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
 			int i;
 
 			g.setColor(140, 140, 230);
