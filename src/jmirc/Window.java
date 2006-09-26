@@ -178,7 +178,7 @@ public class Window extends Canvas implements CommandListener {
 	public void setHeaderVisible(boolean visible) {
 		if (visible) {
 			int hheight = headerfont.getHeight();
-			textarea.setSize(hheight, getHeight()-hheight);
+			textarea.setSize(hheight+1, getHeight()-hheight);
 		}
 		else
 			textarea.setSize(0, getHeight());
