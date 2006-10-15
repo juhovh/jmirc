@@ -127,7 +127,7 @@ public class Window extends Canvas implements CommandListener {
 			cmd_query = new Command("Query", Command.SCREEN, 30);
 			cmd_favourites = new Command("Favourites", Command.SCREEN, 40);
 			cmd_traffic = new Command("Bytecounter", Command.SCREEN, 50);
-			cmd_timestamp = new Command("Timestamp on", Command.SCREEN, 60);
+			cmd_timestamp = new Command("Timestamp " + (timestamp ? "off" : "on"), Command.SCREEN, 60);
 			cmd_disconnect = new Command("Disconnect", Command.SCREEN, 70);
 
 			cmd_close = new Command("Close", Command.SCREEN, 65);
@@ -745,12 +745,12 @@ public class Window extends Canvas implements CommandListener {
 		}
 		else if (c == cmd_timestamp) {
 			removeCommand(cmd_timestamp);
-			if (timestamp)
-				cmd_timestamp = new Command("Timestamp on", Command.SCREEN, 60);
-			else
-				cmd_timestamp = new Command("Timestamp off", Command.SCREEN, 60);				
-			addCommand(cmd_timestamp);
 			timestamp = !timestamp;
+			if (timestamp)
+				cmd_timestamp = new Command("Timestamp off", Command.SCREEN, 60);
+			else
+				cmd_timestamp = new Command("Timestamp on", Command.SCREEN, 60);
+			addCommand(cmd_timestamp);
 			repaint();
 		}
 		else if (c == cmd_names) {
