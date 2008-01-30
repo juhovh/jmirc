@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+
+<project name="BBirc" default="preverify" basedir=".">
+
+	<property name="license" value="license.txt"/>
+	<property name="jarfile" value="${ant.project.name}.jar"/> 	
+	<property name="jadfile" value="${ant.project.name}.jad"/>
+	<property name="codfile" value="${ant.project.name}.cod"/>
+	<property name="alxfile" value="${ant.project.name}.alx"/>
+	<property name="zipfile" value="${ant.project.name}.zip"/>
+	<property name="zipsrcfile" value="${ant.project.name}_src.zip"/>
+	
+	<property name="lib_s4bb_customization" value="../lib_s4bb_customization"/>
+	<property name="lib_s4bb_customization_classes" value="${lib_s4bb_customization}/classes/final"/>
+	<property name="classpath" value="${lib_s4bb_customization_classes};"/>
+	
+	<property name="wtk.home" value="c:\apps\jdks\sunwtk22"/>
+	<property name="wtk.cldc.version" value="1.1"/>
+	<property name="wtk.midp.version" value="2.0"/>
+	<property name="src" location="net"/>
+	<property name="unpreverified.classes" value="classes/unpreverified"/> 
+	<property name="final.classes" value="classes/final"/>
+	<property name="antenna.jar" value="antenna-bin-0.9.12.jar"/> 
+	<property name="bootclasspath_blackberry" value="C:/apps/jdks/blackberry/lib/4.0.1/net_rim_api.jar"/>	
+	<taskdef name="wtkbuild" classname="de.pleumann.antenna.WtkBuild" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkpreverify" classname="de.pleumann.antenna.WtkPreverify" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkpreprocess" classname="de.pleumann.antenna.WtkPreprocess" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkpackage" classname="de.pleumann.antenna.WtkPackage" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkrapc" classname="de.pleumann.antenna.WtkRapc" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkobfuscate" classname="de.pleumann.antenna.WtkObfuscate" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkmakeprc" classname="de.pleumann.antenna.WtkMakePrc" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkrun" classname="de.pleumann.antenna.WtkRun" classpath="${build.jars}/${antenna.jar}"/>
+	<taskdef name="wtkjad" classname="de.pleumann.antenna.WtkJad" classpath="${build.jars}/${antenna.jar}"/>
+	
+	<property name="wtk.proguard.home" value="c:/apps/proguard/"/>
+
+
+	<target name="init" depends="clean"> 
+		<mkdir dir="classes"/> 
+		<mkdir dir="${unpreverified.classes}"/> 
+		<mkdir dir="${final.classes}"/> 
+		<mkdir dir="dist"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="classes"/> 
+	 	<!-- delete dir="dist"/ -->
+	</target>
+	
+	<target name="compile" depends="init">  
+		<wtkbuild preverify="false" srcdir="${src}" destdir="${unpreverified.classes}" classpath="${classpath}"/> 
+	</target>
+	
+	<target name="preverify" depends="compile"> 
+		<wtkpreverify cldc="false" srcdir="${unpreverified.classes}" destdir="${final.classes}" classpath="${classpath}"/> 
+	</target>
+
+	<target name="package" depends="preverify"> 
+		<delete dir="${final.classes}/META-INF" />
+		<wtkpackage jarfile="${jarfile}" jadfile="${jadfile}"> 
+			<fileset dir="${final.classes}"/> 
+			<fileset dir="${lib_s4bb_customization_classes}"/> 
+			<fileset dir="res"/>  
+		</wtkpackage> 
+	</target>
+	
+	<target name="obfuscate" depends="package"> 
+		<wtkobfuscate jarfile="${jarfile}" jadfile="${jadfile}" bootclasspath="${bootclasspath_blackberry}"> 
+			<argument value="-defaultpackage"/>
+		</wtkobfuscate> 
+		<wtkpreverify jarfile="${jarfile}" jadfile="${jadfile}" cldc="false"  bootclasspath="${bootclasspath_blackberry}"/> 
+	</target>
+
+	<target name="rapc" depends="obfuscate" description="RIM COD Compiler"> 
+		<exec dir="dist" executable="C:/apps/jdks/blackberry/bin/rapc.exe"> 
+			<arg line=" import=C:/apps/jdks/blackberry/lib/4.0.1/net_rim_api.jar "/> 
+			<arg line=" codename=${ant.project.name} -midlet jad=../${jadfile}"/> 
+			<arg line=" ../${jarfile}"/>
+		</exec>
+		<copy todir="dist">
+			<fileset dir="." file="${alxfile}"/>
+			<fileset dir="." file="${jadfile}"/>
+		</copy>
+	</target>
+
+	<target name="zip" depends="rapc">
+		<zip destfile="dist/${zipfile}">
+		  <fileset dir="dist" includes="${codfile}"/>
+		  <fileset dir="dist" includes="${alxfile}"/>
+		  <fileset dir="." includes="${license}"/>
+		</zip>
+	</target>
+
+	<target name="zip_src">
+		<zip destfile="dist/${zipsrcfile}">
+			<fileset dir=".">
+				<include name="net/**"/>
+				<include name="res/**"/>
+				<include name="project.properties"/>
+				<include name="build.xml"/>
+				<include name="${jadfile}"/>
+				<include name="${alxfile}"/>
+				<include name="${license}"/>
+			</fileset>
+			<fileset dir="${lib_s4bb_customization}">
+				<include name="net/**"/>
+				<include name="res/**"/>
+			</fileset>
+		</zip>
+	</target>
+</project> 
+
+

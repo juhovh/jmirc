@@ -1,0 +1,27 @@
+<loader version="1.0">
+	<application id="BBirc">
+		<name>
+			BBirc
+		</name>
+		<description>
+			BBirc
+		</description>
+		<version>
+			1.0
+		</version>
+		<vendor>
+			S4BB Ltd.
+		</vendor>
+		<copyright>
+			Copyright 2006 S4BB Ltd. Released under GPL.
+		</copyright>
+		<fileset Java="1.5">
+			<directory>
+
+			</directory>
+			<files>
+				BBirc.cod
+			</files>
+		</fileset>
+	</application>
+</loader>

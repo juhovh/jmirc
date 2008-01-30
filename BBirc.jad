@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+MIDlet-Version: 1.0
+Vendor-Support-EMail: info@s4bb.net
+MIDlet-Jar-Size: 47891
+Created-By: 1.5.0_06-b05 (Sun Microsystems Inc.)
+MicroEdition-Configuration: CLDC-1.1
+MIDlet-Jar-URL: BBirc.jar
+RIM-COD-Module-Dependencies: net_rim_cldc
+RIM-COD-Module-Name: BBirc
+MIDlet-Name: BBirc
+RIM-COD-Size: 51020
+RIM-COD-Creation-Time: 1156812285
+MIDlet-1: BBirc, /bbirc_logo_32x32.png, net.s4bb.bbirc.jmIrc
+RIM-COD-URL: BBirc.cod
+RIM-COD-SHA1: b9 f2 13 45 df 3f fa 44 8b 59 8d b0 75 6f 63 0d ad e9 08 67
+MicroEdition-Profile: MIDP-2.0
+MIDlet-Vendor: S4BB Ltd.
+Ant-Version: Apache Ant 1.6.5
+Vendor-Company-Logo: /s4bb_30x30.png
