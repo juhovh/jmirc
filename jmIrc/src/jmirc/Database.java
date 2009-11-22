@@ -192,9 +192,9 @@ public class Database {
 			profilename = "";
 			nick = "";
 			altnick = "";
-			host =  "irc.us.ircnet.net";
+			host =  "irc.dal.net";
 			port = 6667;
-			channels = "#jmIrc";
+			channels = "#jmIrcHelp";
 			username = "";
 			realname = "jmIrc user";
 			passwd = "";
