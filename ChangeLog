@@ -1,3 +1,8 @@
+2009-11-22  Juho Vähä-Herttua
+   * Update project to Java ME Platform SDK 3.0
+   * Change default channel to DALnet #jmirchelp
+   * Add support for /nickserv command
+
 2007-01-18  Ondrej Novy
    * Changed max server password length from 10 to 20
    * Added NickServ support
