@@ -276,6 +276,9 @@ public class Window extends Canvas implements CommandListener {
 					else if (command.equals("/MODE")) {
 						jmIrc.writeLine("MODE " + str.substring(6));
 					}
+					else if (command.equals("/NICKSERV")) {
+						jmIrc.writeLine("NICKSERV :" + str.substring(10));
+					}
 					else if (command.equals("/QUIT")) {
 						jmIrc.disconnect("QUIT :" + str.substring(6));
 					}
