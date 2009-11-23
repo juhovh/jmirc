@@ -51,7 +51,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 	private Command cmd_ok, cmd_cancel;
 
 	private TextField tf_profilename, tf_nick, tf_altnick, tf_host, tf_port, tf_channels, tf_username, tf_realname;
-	private TextField tf_hilight, tf_passwd, tf_buflines, tf_nickserv_passwd;
+	private TextField tf_hilight, tf_passwd, tf_buflines;
 	private TextField tf_gwhost, tf_gwport, tf_gwpasswd, tf_polltime;
 
 	private ChoiceGroup cg_misc, cg_interface, cg_fontsize, cg_encoding;
@@ -163,7 +163,6 @@ public class jmIrc extends MIDlet implements CommandListener {
 					db.username = tf_username.getString();
 					db.realname = tf_realname.getString();
 					db.passwd = tf_passwd.getString();
-					db.nickserv_passwd = tf_nickserv_passwd.getString();
 
 					if (editing)
 						db.editProfile(list_profile.getSelectedIndex());
@@ -180,7 +179,6 @@ public class jmIrc extends MIDlet implements CommandListener {
 				tf_username = null;
 				tf_realname = null;
 				tf_passwd = null;
-				tf_nickserv_passwd = null;
 
 				if (cmd == cmd_ok)
 					commandAction(cmd_profiles, null);
@@ -276,8 +274,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 				tf_channels = new TextField("Channels", db.channels, 600, TextField.ANY);
 				tf_username = new TextField("Username", db.username, 25, TextField.ANY);
 				tf_realname = new TextField("Real name", db.realname, 50, TextField.ANY);
-				tf_passwd = new TextField("Server password", db.passwd, 20, TextField.PASSWORD);
-				tf_nickserv_passwd = new TextField("NickServ password", db.nickserv_passwd, 20, TextField.PASSWORD);
+				tf_passwd = new TextField("Server password", db.passwd, 25, TextField.PASSWORD);
 
 				cfgform = new Form("Config");
 				cfgform.append(tf_profilename);
@@ -289,7 +286,6 @@ public class jmIrc extends MIDlet implements CommandListener {
 				cfgform.append(tf_username);
 				cfgform.append(tf_realname);
 				cfgform.append(tf_passwd);
-				cfgform.append(tf_nickserv_passwd);
 
 				if (cmd == cmd_profile_edit)
 					currentform = FORM_CONFIG_EDIT;

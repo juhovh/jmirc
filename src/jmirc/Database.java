@@ -36,7 +36,6 @@ public class Database {
 	String username;
 	String realname;
 	String passwd;
-	String nickserv_passwd;
 
 	int[] idxarray;
 
@@ -198,7 +197,6 @@ public class Database {
 			username = "";
 			realname = "jmIrc user";
 			passwd = "";
-			nickserv_passwd = "";
 		}
 		else if (index < idxarray.length) {
 			try {
@@ -216,7 +214,6 @@ public class Database {
 					username = dis.readUTF();
 					realname = dis.readUTF();
 					passwd = dis.readUTF();
-					nickserv_passwd = dis.readUTF();
 				}
 				rs.closeRecordStore();
 			} catch (Exception e) {
@@ -249,7 +246,6 @@ public class Database {
 			dos.writeUTF(username);
 			dos.writeUTF(realname);
 			dos.writeUTF(passwd);
-			dos.writeUTF(nickserv_passwd);
 			byte[] temp = baos.toByteArray();
 			dos.close();
 
