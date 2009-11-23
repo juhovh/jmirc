@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2004-2006  Juho Vähä-Herttua
+Copyright (C) 2004-2009  Juho Vähä-Herttua
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
 public class jmIrc extends MIDlet implements CommandListener {
-	public final static String VERSION = "0.95";
+	public final static String VERSION = "0.96";
 
 	private final static int FORM_MAIN = 0;
 	private final static int FORM_PROFILES = 1;
