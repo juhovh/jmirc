@@ -30,7 +30,7 @@ public class Listener extends Thread {
 	private Hashtable whois;
 	private boolean needupdate, nicktried, pollmode, showinput;
 
-	private String altnick, host, password, username, realname, nickserv_password;
+	private String altnick, host, password, username, realname;
 	private int port, polltime;
 	private String[] channels;
 	
@@ -44,7 +44,6 @@ public class Listener extends Thread {
 		this.username = db.username;
 		this.realname = db.realname;
 		this.port = db.port;
-		this.nickserv_password = db.nickserv_passwd;
 		if (db.usehttp) {
 			this.pollmode = false;
 			uihandler.getConsole().writeInfo("using HTTP proxy server to connect");
@@ -75,8 +74,6 @@ public class Listener extends Thread {
 			initstr += "PASS " + this.password + "\r\n";
 		initstr += "NICK " + tmpnick + "\r\n";
 		initstr += "USER " + tmpuser + " 8 * :" + tmpreal + "\r\n";
-		if (!Utils.hasNoValue(this.nickserv_password))
-			initstr += "PRIVMSG NickServ : IDENTIFY " + this.nickserv_password + "\r\n";
 
 		ret = irc.connect(host, port, initstr);
 
