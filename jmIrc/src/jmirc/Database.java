@@ -43,17 +43,18 @@ public class Database {
 	int profileidx = -1;
 	boolean usepoll=false;
 	boolean showinput=false;
-	String encoding = "ISO-8859-1";
 	boolean utf8detect=true;
 	boolean utf8output=false;
-	String hilight = "";
-	int buflines = 50;
+	String encoding = "ISO-8859-1";
+	int connectionmode=0;
 
 	boolean header=true;
 	boolean timestamp=false;
 	boolean usecolor=true;
 	boolean usemirccol=false;
 	int fontsize=0;
+	int buflines = 50;
+	String hilight = "";
 	
 	boolean usehttp=false;
 	String gwhost =  "";
@@ -121,11 +122,10 @@ public class Database {
 				din = new DataInputStream(new ByteArrayInputStream(rs.getRecord(3)));
 				usepoll = din.readBoolean();
 				showinput = din.readBoolean();
-				encoding = din.readUTF();
 				utf8detect = din.readBoolean();
 				utf8output = din.readBoolean();
-				buflines = din.readInt();
-				hilight = din.readUTF();
+				encoding = din.readUTF();
+				connectionmode = din.readInt();
 				
 				din = new DataInputStream(new ByteArrayInputStream(rs.getRecord(4)));
 				header = din.readBoolean();
@@ -133,6 +133,8 @@ public class Database {
 				usecolor = din.readBoolean();
 				usemirccol = din.readBoolean();
 				fontsize = din.readInt();
+				buflines = din.readInt();
+				hilight = din.readUTF();
 				
 				din = new DataInputStream(new ByteArrayInputStream(rs.getRecord(5)));
 				usehttp = din.readBoolean();
@@ -372,11 +374,10 @@ public class Database {
 
 			dos.writeBoolean(usepoll);
 			dos.writeBoolean(showinput);
-			dos.writeUTF(encoding);
 			dos.writeBoolean(utf8detect);
 			dos.writeBoolean(utf8output);
-			dos.writeInt(buflines);
-			dos.writeUTF(hilight);
+			dos.writeUTF(encoding);
+			dos.writeInt(connectionmode);
 
 			byteout = baos.toByteArray();
 			dos.close();
@@ -403,6 +404,8 @@ public class Database {
 			dos.writeBoolean(usecolor);
 			dos.writeBoolean(usemirccol);
 			dos.writeInt(fontsize);
+			dos.writeInt(buflines);
+			dos.writeUTF(hilight);
 			
 			byteout = baos.toByteArray();
 			dos.close();

@@ -24,7 +24,7 @@ import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
 public class jmIrc extends MIDlet implements CommandListener {
-	public final static String VERSION = "0.96";
+	public final static String VERSION = "0.97 beta";
 
 	private final static int FORM_MAIN = 0;
 	private final static int FORM_PROFILES = 1;
@@ -54,7 +54,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 	private TextField tf_hilight, tf_passwd, tf_buflines;
 	private TextField tf_gwhost, tf_gwport, tf_gwpasswd, tf_polltime;
 
-	private ChoiceGroup cg_misc, cg_interface, cg_fontsize, cg_encoding;
+	private ChoiceGroup cg_misc, cg_interface, cg_fontsize, cg_encoding, cg_connectionmode;
 	private ChoiceGroup cg_usehttp;
 
 	private List list_profile;
@@ -116,7 +116,7 @@ public class jmIrc extends MIDlet implements CommandListener {
 			if (db.usehttp)
 				irc = (IrcConnection) new HttpIrc(db.gwhost, db.gwport, db.gwpasswd, db.encoding);
 			else
-				irc = (IrcConnection) new SocketIrc(db.usepoll, db.encoding);
+				irc = (IrcConnection) new SocketIrc(db.usepoll, db.connectionmode, db.encoding);
 
 			irc.setUnicodeMode(db.utf8detect, db.utf8output);
 			uihandler = new UIHandler(db, display);
@@ -193,14 +193,12 @@ public class jmIrc extends MIDlet implements CommandListener {
 					db.utf8detect = cg_misc.isSelected(2);
 					db.utf8output = cg_misc.isSelected(3);
 					db.encoding = cg_encoding.getString(cg_encoding.getSelectedIndex());
-					db.buflines = parseInt(tf_buflines.getString());
-					db.hilight = tf_hilight.getString();
+					db.connectionmode = cg_connectionmode.getSelectedIndex();
 					db.save_advanced();
 				}
 				cg_misc = null;
 				cg_encoding = null;
-				tf_buflines = null;
-				tf_hilight = null;
+                                cg_connectionmode = null;
 				display.setCurrent(mainform);
 			}
 			else if (currentform == FORM_INTERFACE) {
@@ -211,10 +209,14 @@ public class jmIrc extends MIDlet implements CommandListener {
 					db.usecolor = cg_interface.isSelected(2);
 					db.usemirccol = cg_interface.isSelected(3);
 					db.fontsize = cg_fontsize.getSelectedIndex();
+					db.buflines = parseInt(tf_buflines.getString());
+					db.hilight = tf_hilight.getString();
 					db.save_interface();
 				}
 				cg_interface = null;
 				cg_fontsize = null;
+				tf_buflines = null;
+				tf_hilight = null;
 				display.setCurrent(mainform);
 			}
 			else if (currentform == FORM_HTTP) {
@@ -324,14 +326,17 @@ public class jmIrc extends MIDlet implements CommandListener {
 				else if (db.encoding.equals("Windows-1255")) cg_encoding.setSelectedIndex(5, true);
 				else cg_encoding.setSelectedIndex(0, true);
 
-				tf_buflines = new TextField("Backbuffer lines", new Integer(db.buflines).toString(), 3, TextField.NUMERIC);
-				tf_hilight = new TextField("Highlight string", db.hilight, 50, TextField.ANY);
+                                cg_connectionmode = new ChoiceGroup("Connection mode", ChoiceGroup.EXCLUSIVE);
+                                cg_connectionmode.append("Default", null);
+                                cg_connectionmode.append("BlackBerry", null);
+                                cg_connectionmode.append("BlackBerry MDS", null);
+                                cg_connectionmode.append("BlackBerry WiFi", null);
+                                cg_connectionmode.setSelectedIndex(db.connectionmode, true);
 
 				cfgform = new Form("Advanced Config");
 				cfgform.append(cg_misc);
 				cfgform.append(cg_encoding);
-				cfgform.append(tf_buflines);
-				cfgform.append(tf_hilight);
+                                cfgform.append(cg_connectionmode);
 				currentform = FORM_ADVANCED;
 			}
 			else if (cmd == cmd_interface) {
@@ -352,9 +357,14 @@ public class jmIrc extends MIDlet implements CommandListener {
 				cg_fontsize.append("Large", null);
 				cg_fontsize.setSelectedIndex(db.fontsize, true);
 
+				tf_buflines = new TextField("Backbuffer lines", new Integer(db.buflines).toString(), 3, TextField.NUMERIC);
+				tf_hilight = new TextField("Highlight string", db.hilight, 50, TextField.ANY);
+
 				cfgform = new Form("Interface Config");
 				cfgform.append(cg_interface);
 				cfgform.append(cg_fontsize);
+				cfgform.append(tf_buflines);
+				cfgform.append(tf_hilight);
 				currentform = FORM_INTERFACE;
 			}
 			else if (cmd == cmd_http) {				
