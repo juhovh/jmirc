@@ -134,6 +134,10 @@ public class Utils {
 	public static String trim(String input) {
 		int idx1, idx2;
 
+		if (input.length() == 0) {
+			return;
+		}
+
 		for (idx1=0; idx1<=input.length() && input.charAt(idx1)==' '; idx1++);
 		for (idx2=input.length()-1; idx2>idx1 && input.charAt(idx2)==' '; idx2--);
 
