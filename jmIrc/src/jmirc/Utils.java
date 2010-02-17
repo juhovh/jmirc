@@ -134,13 +134,13 @@ public class Utils {
 	public static String trim(String input) {
 		int idx1, idx2;
 
-		if (input.length() == 0) {
-			return;
+		if (input == null || input.length() == 0) {
+			return input;
 		}
 
 		for (idx1=0; idx1<=input.length() && input.charAt(idx1)==' '; idx1++);
 		for (idx2=input.length()-1; idx2>idx1 && input.charAt(idx2)==' '; idx2--);
 
-		return input.substring(idx1, idx2+1);
+		return input.substring(idx1, Math.min(idx2+1, input.length()-1));
 	}
 }
