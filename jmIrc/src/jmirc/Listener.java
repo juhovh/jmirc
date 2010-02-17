@@ -421,8 +421,13 @@ public class Listener extends Thread {
 						uihandler.getChannel(command[2]).writeInfo("Topic is '" + cmdline[2] + "'");
 						break;
 					case 333:  // RPL_TOPICWHOTIME
-						String topicwho = "";
-						topicwho += "Topic set by '" + command[3].substring(0, command[3].indexOf('!')) + "'";
+						String topicwho = "Topic set by ";
+						int exclidx = command[3].indexOf('!');
+						if (exclidx >= 0) {
+							topicwho += "'" + command[3].substring(0, exclidx) + "'";
+						} else {
+							topicwho += "'" + command[3] + "'";
+						}
 						topicwho += " on " + Utils.formatDateMillis(Long.parseLong(cmdline[2])*1000);
 						uihandler.getChannel(command[2]).writeInfo(topicwho);
 						break;
