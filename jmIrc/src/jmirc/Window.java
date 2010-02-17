@@ -1023,12 +1023,20 @@ public class Window extends Canvas implements CommandListener {
 						}
 						else {
 							if (cols[0] != null) {
-								colour &= ~0x0f;
-								colour |= mirccols[Integer.parseInt(cols[0])&0x0f];
+								int intValue = Integer.parseInt(cols[0]);
+								if (intValue < 16) {
+									// Only first 16 colors supported
+									colour &= ~0x0f;
+									colour |= mirccols[intValue&0x0f];
+								}
 							}
 							if (cols[1] != null) {
-								colour &= ~0xf0;
-								colour |= mirccols[(Integer.parseInt(cols[1])&0x0f)] << 4;
+								int intValue = Integer.parseInt(cols[1]);
+								if (intValue < 16) {
+									// Only first 16 colors supported
+									colour &= ~0xf0;
+									colour |= mirccols[intValue&0x0f] << 4;
+								}
 							}
 						}
 						break;

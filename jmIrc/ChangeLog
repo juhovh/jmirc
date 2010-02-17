@@ -4,6 +4,7 @@ Version 0.96
 2010-01-17  Juho Vähä-Herttua
    * Fix RPL_TOPICWHOTIME for some servers
    * Fix a possible exception in Utils.trim() (thanks to Federico)
+   * Fix a small issue in mIRC color parsing
 
 2010-01-16  Juho Vähä-Herttua
    * Move some fields from advanced settings to interface settings
