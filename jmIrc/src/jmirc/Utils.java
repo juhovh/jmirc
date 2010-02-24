@@ -141,6 +141,6 @@ public class Utils {
 		for (idx1=0; idx1<=input.length() && input.charAt(idx1)==' '; idx1++);
 		for (idx2=input.length()-1; idx2>idx1 && input.charAt(idx2)==' '; idx2--);
 
-		return input.substring(idx1, Math.min(idx2+1, input.length()-1));
+		return input.substring(idx1, idx2+1);
 	}
 }
