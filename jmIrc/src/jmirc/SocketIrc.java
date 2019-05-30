@@ -24,32 +24,14 @@ import javax.microedition.io.*;
 public class SocketIrc extends IrcConnection {
 	private DataInputStream in;
 	private DataOutputStream out;
-	private String encoding, urlparam, outbuf;
+	private String encoding, outbuf;
 	private boolean pollmode, connected;
 
 	private int bytein;
 	private int byteout;
 
-	public SocketIrc(boolean pollmode, int connectionmode, String charset) {
+	public SocketIrc(boolean pollmode, String charset) {
 		encoding = charset;
-		switch(connectionmode) {
-		case 1:
-			// BlackBerry direct mode
-			urlparam = ";deviceside=true";
-			break;
-		case 2:
-			// BlackBerry MDS mode
-			urlparam = ";deviceside=false";
-			break;
-		case 3:
-			// BlackBerry WiFi mode
-			urlparam = ";interface=wifi";
-			break;
-		default:
-			// BlackBerry direct mode
-			urlparam = "";
-			break;
-                }
 
 		bytein = 0;
 		byteout = 0;
@@ -62,7 +44,7 @@ public class SocketIrc extends IrcConnection {
 		String ret = null;
 
 		try {
-			connector = (StreamConnection) Connector.open("socket://" + host + ":" + port + urlparam, Connector.READ_WRITE, true);
+			connector = (StreamConnection) Connector.open("socket://" + host + ":" + port, Connector.READ_WRITE, true);
 			in = connector.openDataInputStream();
 			out = connector.openDataOutputStream(); 
 
