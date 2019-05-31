@@ -1,6 +1,9 @@
 Version 0.97
 ------------
 
+2019-05-31  Juho Vähä-Herttua
+   * Remove BlackBerry specific connection modes, keep it generic
+
 2010-01-17  Juho Vähä-Herttua
    * Fix RPL_TOPICWHOTIME for some servers
    * Fix a possible exception in Utils.trim() (thanks to Federico)
