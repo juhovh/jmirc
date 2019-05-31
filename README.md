@@ -24,7 +24,7 @@ Start the SDK with explicitly defining the used Java version, it will crash if
 you try to run it with e.g. Java 8:
 
 ```
-/Applications/Java_ME_SDK_3.0.app/Contents/MacOS/javamesdk --jdkhome /Library/Java/JaVirtualMachines/1.6.0.jdk/Contents/Home
+/Applications/Java_ME_SDK_3.0.app/Contents/MacOS/javamesdk --jdkhome /Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
 ```
 
 Open the project, run build and the resulting jmIrc.jad and jmIrc.jad files
@@ -38,5 +38,5 @@ to the network will fail because of a failure in permissions.
 Please notice that the Java 6 and Java ME SDK 3.0 combination is not really
 compatible with the latest macOS versions, so it will crash occasionally with an
 error from the AWT JNI library. You probably just have to bear with that, after
-all this is 15 year old and mostly deprecated technology...
+all this is 15 years old and mostly deprecated technology...
 
