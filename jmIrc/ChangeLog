@@ -1,4 +1,4 @@
-Version 0.96
+Version 0.97
 ------------
 
 2010-01-17  Juho Vähä-Herttua
@@ -9,6 +9,9 @@ Version 0.96
 2010-01-16  Juho Vähä-Herttua
    * Move some fields from advanced settings to interface settings
    * Add BlackBerry specific connection modes to advanced settings
+
+Version 0.96
+------------
 
 2009-11-22  Juho Vähä-Herttua
    * Update project to Java ME Platform SDK 3.0
