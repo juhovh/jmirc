@@ -27,7 +27,7 @@ you try to run it with e.g. Java 8:
 /Applications/Java_ME_SDK_3.0.app/Contents/MacOS/javamesdk --jdkhome /Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
 ```
 
-Open the project, run build and the resulting jmIrc.jad and jmIrc.jad files
+Open the project, run build and the resulting jmIrc.jad and jmIrc.jar files
 should appear in the dist/ directory under the project.
 
 If you want to test the application in the emulator, you can click the "Run Main
